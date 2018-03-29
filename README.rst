@@ -10,30 +10,76 @@ Package for integrate and connect Plone Site with OwnCloud service
 
 Features
 --------
+Supports connecting to ownCloud 8.2, 9.0, 9.1 and newer.
 
-- TODO
+General information
+-------------------
 
+- retrieve information about ownCloud instance (e.g. version, host, URL, etc.)
 
-Examples
+Accessing files
+---------------
+
+- basic file operations like getting a directory listing, file upload/download, directory creation, etc
+- read/write file contents from strings
+- upload with chunking and mtime keeping
+- upload whole directories
+- directory download as zip
+
+Sharing (OCS Share API)
+-----------------------
+
+- share a file/directory via public link
+- share a file/directory with another user or group
+- unshare a file/directory
+- check if a file/directory is already shared
+- get information about a shared resource
+- update properties of a known share
+
+Apps (OCS Provisioning API)
+---------------------------
+
+- enable/disable apps
+- retrieve list of enabled apps
+
+Users (OCS Provisioning API)
+----------------------------
+
+- create/delete users
+- create/delete groups
+- add/remove user from groups
+
+App data
 --------
 
-This add-on can be seen in action at the following sites:
-- Is there a page on the internet where everybody can see the features?
+- store app data as key/values using the privatedata OCS API
 
+Requirements
+============
 
-Documentation
--------------
+- Python >= 2.7 or Python >= 3.5
+- requests module (for making HTTP requests)
 
-Full documentation for end users can be found in the "docs" folder, and is also available online at http://docs.plone.org/foo/bar
+Usage
+=====
 
+Example for uploading a file then sharing with link:
 
-Translations
-------------
+.. code-block:: python
 
-This product has been translated into
+    import owncloud
 
-- Klingon (thanks, K'Plai)
+    oc = owncloud.Client('http://domain.tld/owncloud')
 
+    oc.login('user', 'password')
+
+    oc.mkdir('testdir')
+
+    oc.put_file('testdir/remotefile.txt', 'localfile.txt')
+
+    link_info = oc.share_file_with_link('testdir/remotefile.txt')
+
+    print "Here is your link: " + link_info.get_link()
 
 Installation
 ------------
@@ -50,20 +96,19 @@ Install ulearn5.owncloud by adding it to your buildout::
 
 and then running ``bin/buildout``
 
+Building the documentation
+==========================
 
-Contribute
-----------
+To build the documentation, you will need to install Sphinx and docutil.
+Then run the following commands:
 
-- Issue Tracker: https://github.com/collective/ulearn5.owncloud/issues
-- Source Code: https://github.com/collective/ulearn5.owncloud
-- Documentation: https://docs.plone.org/foo/bar
+.. code-block:: bash
 
+    $ sphinx-apidoc -e -f -o docs/source owncloud/ owncloud/test
+    $ cd docs
+    $ make html
 
-Support
--------
-
-If you are having issues, please let us know.
-We have a mailing list located at: project@example.com
+You can then find the documentation inside of "doc/build/html".
 
 
 License
