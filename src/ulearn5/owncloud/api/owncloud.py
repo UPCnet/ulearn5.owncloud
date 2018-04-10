@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-
-"""
-ownCloud client module
+#
+# vim: expandtab shiftwidth=4 softtabstop=4
+#
+"""ownCloud client module
 
 Makes it possible to access files on a remote ownCloud instance,
 share them or access application attributes.
@@ -10,11 +11,50 @@ share them or access application attributes.
 import datetime
 import time
 import requests
+import xml.etree.ElementTree as ET
 import os
 import math
 import six
 from six.moves.urllib import parse
-from utils import OCSResponseError, HTTPResponseError, ResponseError
+
+
+class ResponseError(Exception):
+    def __init__(self, res, errorType):
+        if type(res) is int:
+            code = res
+        else:
+            code = res.status_code
+            self.res = res
+        Exception.__init__(self, errorType + " error: %i" % code)
+        self.status_code = code
+
+    def get_resource_body(self):
+        if self.res is not None:
+            return self.res.content
+        else:
+            return None
+
+
+class OCSResponseError(ResponseError):
+    def __init__(self, res):
+        ResponseError.__init__(self, res, "OCS")
+
+    def get_resource_body(self):
+        if self.res is not None:
+            import xml.etree.ElementTree as ElementTree
+            try:
+                root_element = ElementTree.fromstringlist(self.res.content)
+                if root_element.tag == 'message':
+                    return root_element.text
+            except ET.ParseError:
+                return self.res.content
+        else:
+            return None
+
+
+class HTTPResponseError(ResponseError):
+    def __init__(self, res):
+        ResponseError.__init__(self, res, "HTTP")
 
 
 class ShareInfo(object):
@@ -70,19 +110,17 @@ class ShareInfo(object):
         return None
 
     def get_path(self):
-        """
-        Returns the path of the shared file/folder relative to the
+        """Returns the path of the shared file/folder relative to the
         caller's filesystem.
 
         :returns: path to the shared file/folder
         """
-
         if 'path' in self.share_info:
             return self.share_info['path']
         return None
 
     def get_permissions(self):
-            """ Returns the share permissions.
+        """Returns the share permissions.
         See OCS_PERMISSION_* constants.
 
         :returns: share permissions
@@ -113,19 +151,11 @@ class ShareInfo(object):
         return None
 
     def get_token(self):
-        """Returns the token if exists.
-
-        :returns: token
-        """
         if 'token' in self.share_info:
             return self.share_info['token']
         return None
 
     def get_link(self):
-        """Returns the link if exists.
-
-        :returns: link
-        """
         if 'url' in self.share_info:
             return self.share_info['url']
         return None
@@ -306,6 +336,9 @@ class Client(object):
         self._capabilities = None
         self._version = None
 
+    def __call__(self):
+        return (self)
+
     def login(self, user_id, password):
         """Authenticate to ownCloud.
         This will create a session on the server.
@@ -314,7 +347,6 @@ class Client(object):
         :param password: password
         :raises: HTTPResponseError in case an HTTP error status was returned
         """
-
         self._session = requests.session()
         self._session.verify = self._verify_certs
         self._session.auth = (user_id, password)
@@ -323,6 +355,7 @@ class Client(object):
             self._update_capabilities()
 
             url_components = parse.urlparse(self.url)
+
             if self._dav_endpoint_version == 1:
                 self._davpath = url_components.path + 'remote.php/dav/files/' + parse.quote(user_id)
                 self._webdav_url = self.url + 'remote.php/dav/files/' + parse.quote(user_id)
