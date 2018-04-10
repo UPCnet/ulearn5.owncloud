@@ -3,20 +3,14 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="ulearn5.owncloud">
 
   <i18n:registerTranslations directory="locales" />
 
-  <!--
-    Be careful if you use general includeDependencies, it can have sideffects!
-    Better import explicite packages or configurations ;)
-  -->
-  <!--<includeDependencies package="." />-->
 
   <include package=".browser" />
-
   <include file="permissions.zcml" />
-
   <include file="upgrades.zcml" />
 
   <genericsetup:registerProfile
@@ -42,6 +36,12 @@
       name="ulearn5.owncloud-hiddenprofiles"
       />
 
-  <!-- -*- extra stuff goes here -*- -->
+  <browser:page
+      name="owncloud-settings"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".controlpanel.OwnCloudControlPanel"
+      permission="cmf.ManagePortal"
+      layer="ulearn5.owncloud.interfaces.IUlearn5OwncloudLayer"
+  />
 
 </configure>
