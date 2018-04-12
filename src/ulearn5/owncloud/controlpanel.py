@@ -22,6 +22,23 @@ class IOCSettings(model.Schema):
         title=_(u'Connector mode'),
         description=_(u'Connector mode (defaults to \'owncloud\')'),
         default=u'owncloud',
+        required=False
+        )
+
+    connector_username = schema.TextLine(
+        title=_(u'Username for manage OwnCloud'),
+        default=u'ulearn.owncloud',
+        required=True
+        )
+
+    connector_password = schema.Password(
+        title=_(u'Password overriding the system settings'),
+        required=True
+        )
+
+    connector_domain = schema.TextLine(
+        title=_(u'Domain manage communities in OwnCloud'),
+        default=u'UPC',
         required=True
         )
 
