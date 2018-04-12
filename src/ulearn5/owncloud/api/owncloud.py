@@ -303,12 +303,13 @@ class Client(object):
     OCS_SERVICE_CLOUD = 'cloud'
 
     # constants from lib/public/constants.php
-    OCS_PERMISSION_READ = 1
-    OCS_PERMISSION_UPDATE = 2
-    OCS_PERMISSION_CREATE = 4
-    OCS_PERMISSION_DELETE = 8
-    OCS_PERMISSION_SHARE = 16
-    OCS_PERMISSION_ALL = 31
+    OCS_PERMISSION_READ = 1 #Nomes pot veure
+    OCS_PERMISSION_EDIT = 15 #Pot editar, crear, canviar i eliminar
+    OCS_PERMISSION_UPDATE = 2 #Pot editar i modificar, no crear ni eliminar
+    OCS_PERMISSION_CREATE = 4 #Pot crear contingut
+    OCS_PERMISSION_DELETE = 8 #Pot esborrar
+    OCS_PERMISSION_SHARE = 16 #Pot compartir
+    OCS_PERMISSION_ALL = 31 #Pot fer tot
     # constants from lib/public/share.php
     OCS_SHARE_TYPE_USER = 0
     OCS_SHARE_TYPE_GROUP = 1
