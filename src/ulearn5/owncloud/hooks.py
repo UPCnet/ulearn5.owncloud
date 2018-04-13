@@ -1,39 +1,21 @@
 # -*- coding: utf-8 -*-
 from five import grok
-from Acquisition import aq_chain
 from zope.component import getUtility
 
-from zope.component.hooks import getSite
 from zope.container.interfaces import IObjectAddedEvent
 
-from Products.CMFCore.utils import getToolByName
-
-from ulearn5.core.interfaces import IAppImage
-from ulearn5.core.interfaces import IAppFile
 from ulearn5.core.content.community import ICommunity
-
-from mrs5.max.utilities import IMAXClient
-from plone import api
-from souper.soup import get_soup
-from souper.soup import Record
-from repoze.catalog.query import Eq
-from DateTime.DateTime import DateTime
-from zope.component import providedBy
-from plone.app.workflow.interfaces import ILocalrolesModifiedEvent
-from Products.CMFPlone.interfaces import IConfigurationChangedEvent
-from Products.PluggableAuthService.interfaces.events import IUserLoggedInEvent
-from zope.globalrequest import getRequest
-
-import logging
-
-logger = logging.getLogger(__name__)
-
 from ulearn5.owncloud.utilities import IOwncloudClient
-from zope.component import getUtility
-from ulearn5.owncloud.api.owncloud import ResponseError, HTTPResponseError, OCSResponseError
+from ulearn5.owncloud.api.owncloud import HTTPResponseError, OCSResponseError
 from ulearn5.owncloud.interfaces import IUlearn5OwncloudLayer
 from ulearn5.owncloud.api.owncloud import Client
+
+from plone.app.layout.navigation.root import getNavigationRootObject
+from plone.app.contenttypes.interfaces import IFolder
 from plone import api
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 @grok.subscribe(ICommunity, IObjectAddedEvent)
@@ -44,19 +26,21 @@ def communityAdded(content, event):
     """
     client = getUtility(IOwncloudClient)
     valor = client.admin_connection()
+    # Create structure folders community in domain
+    domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain')
+    import ipdb; ipdb.set_trace()
     try:
-        valor.file_info('UPC/' + content.id)
+        valor.file_info(domain.lower() + content.id)
     except OCSResponseError:
         pass
     except HTTPResponseError as err:
         if err.status_code == 404:
 
-            # Create structure folders community in domain
-            domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain')
+
 
             valor.mkdir(domain.lower() + '/' + content.id)
-            valor.mkdir(domain.lower() + '/' + content.id + '/documents')
-            valor.mkdir(domain.lower() + '/' + content.id + '/documents' + '/media')
+            #valor.mkdir(domain.lower() + '/' + content.id + '/documents')
+            #valor.mkdir(domain.lower() + '/' + content.id + '/documents' + '/media')
 
             # Assign owner permissions
             current = api.user.get_current()
@@ -81,3 +65,26 @@ def communityAdded(content, event):
         else:
             logger.warning('The community {} not has been creation in owncloud'.format(content.id))
             raise
+
+
+@grok.subscribe(IFolder, IObjectAddedEvent)
+def folderAdded(content, event):
+    """ A folder is created in OwnCloud
+        with the same name as the community
+    """
+    portal_state = content.unrestrictedTraverse('@@plone_portal_state')
+    root = getNavigationRootObject(content, portal_state.portal())
+    ppath = content.getPhysicalPath()
+    relative = ppath[len(root.getPhysicalPath()):]
+    for p in range(len(relative)):
+        now = relative[:p + 1]
+        obj = root.unrestrictedTraverse(now)
+        if ICommunity.providedBy(obj):
+            # Creem carpeta a OwnCloud
+            domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain')
+            path = "/".join(relative)
+            client = getUtility(IOwncloudClient)
+            session = client.admin_connection()
+            session.mkdir(domain + '/' + path)
+        else:
+            pass

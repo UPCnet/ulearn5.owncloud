@@ -38,7 +38,7 @@ class IOCSettings(model.Schema):
 
     connector_domain = schema.TextLine(
         title=_(u'Domain manage communities in OwnCloud'),
-        default=u'UPC',
+        default=u'upc',
         required=True
         )
 
