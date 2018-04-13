@@ -33,6 +33,7 @@ from zope.component import getUtility
 from ulearn5.owncloud.api.owncloud import ResponseError, HTTPResponseError, OCSResponseError
 from ulearn5.owncloud.interfaces import IUlearn5OwncloudLayer
 from ulearn5.owncloud.api.owncloud import Client
+from plone import api
 
 
 @grok.subscribe(ICommunity, IObjectAddedEvent)
@@ -53,22 +54,24 @@ def communityAdded(content, event):
             valor.mkdir('UPC/' + content.id + '/Documents')
             valor.mkdir('UPC/' + content.id + '/Documents' + '/Media')
 
-            #Para añadir permisos a un usuario
-            valor.share_file_with_user('UPC/' + content.id, 'carles.bruguera') #Lector
-            valor.share_file_with_user('UPC/' + content.id, 'pilar.marinas', perms=Client.OCS_PERMISSION_EDIT) #Editor
-            valor.share_file_with_user('UPC/' + content.id, 'victor', perms=Client.OCS_PERMISSION_ALL) #Propietari
-            # import ipdb;ipdb.set_trace()
+            current = api.user.get_current()
+            valor.share_file_with_user('UPC/' + content.id, current.id , perms=Client.OCS_PERMISSION_ALL) #Propietari
 
-            #Para ver los permisos de una comunidad "content.id" es el objecto que creo en este caso comunidad
-            valor.get_shares('UPC/' + content.id)
-            #Se tendran que recorrer los permisos y modificar los que hagan falta.
-            #Se tiene que pasar el id del permiso a modificar que se obtiene asi
-            valor.get_shares('UPC/' + content.id)[0].get_id()
-            share = valor.get_shares('UPC/' + content.id)[0]
-            #Para modificar el permiso de un usuario
-            valor.update_share(share.get_id(), perms=Client.OCS_PERMISSION_EDIT)
-            #Para borrar el permiso de un usuario
-            #valor.delete_share(share.get_id())
+            # Para añadir permisos a un usuario
+            # valor.share_file_with_user('UPC/' + content.id, 'carles.bruguera') #Lector
+            # valor.share_file_with_user('UPC/' + content.id, 'pilar.marinas', perms=Client.OCS_PERMISSION_EDIT) #Editor
+            # valor.share_file_with_user('UPC/' + content.id, 'victor', perms=Client.OCS_PERMISSION_ALL) #Propietari
+
+            # Para ver los permisos de una comunidad "content.id" es el objecto que creo en este caso comunidad
+            # valor.get_shares('UPC/' + content.id)
+            # Se tendran que recorrer los permisos y modificar los que hagan falta.
+            # Se tiene que pasar el id del permiso a modificar que se obtiene asi
+            # valor.get_shares('UPC/' + content.id)[0].get_id()
+            # share = valor.get_shares('UPC/' + content.id)[0]
+            # Para modificar el permiso de un usuario
+            # valor.update_share(share.get_id(), perms=Client.OCS_PERMISSION_EDIT)
+            # Para borrar el permiso de un usuario
+            # valor.delete_share(share.get_id())
 
         else:
             logger.warning('The community {} not has been creation in owncloud'.format(content.id))
