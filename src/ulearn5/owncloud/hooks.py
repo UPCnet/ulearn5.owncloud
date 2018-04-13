@@ -40,6 +40,7 @@ from plone import api
 def communityAdded(content, event):
     """ A folder is created in OwnCloud
         with the same name as the community
+        by the admin owncloud
     """
     client = getUtility(IOwncloudClient)
     valor = client.admin_connection()
@@ -49,13 +50,17 @@ def communityAdded(content, event):
         pass
     except HTTPResponseError as err:
         if err.status_code == 404:
-            #Para crear carpetas
-            valor.mkdir('UPC/' + content.id)
-            valor.mkdir('UPC/' + content.id + '/Documents')
-            valor.mkdir('UPC/' + content.id + '/Documents' + '/Media')
 
+            # Create structure folders community in domain
+            domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain')
+
+            valor.mkdir(domain.lower() + '/' + content.id)
+            valor.mkdir(domain.lower() + '/' + content.id + '/documents')
+            valor.mkdir(domain.lower() + '/' + content.id + '/documents' + '/media')
+
+            # Assign owner permissions
             current = api.user.get_current()
-            valor.share_file_with_user('UPC/' + content.id, current.id , perms=Client.OCS_PERMISSION_ALL) #Propietari
+            valor.share_file_with_user(domain.lower() + '/' + content.id, current.id , perms=Client.OCS_PERMISSION_ALL) #Propietari
 
             # Para añadir permisos a un usuario
             # valor.share_file_with_user('UPC/' + content.id, 'carles.bruguera') #Lector
