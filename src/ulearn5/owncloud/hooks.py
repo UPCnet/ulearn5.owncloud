@@ -13,6 +13,7 @@ from ulearn5.owncloud.api.owncloud import Client
 from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.app.contenttypes.interfaces import IFolder
 from plone import api
+from ulearn5.core.utils import is_activate_owncloud
 
 import logging
 logger = logging.getLogger(__name__)
@@ -72,42 +73,46 @@ def folderAdded(content, event):
     """ A folder is created in OwnCloud
         with the same name as the community
     """
-    portal_state = content.unrestrictedTraverse('@@plone_portal_state')
-    root = getNavigationRootObject(content, portal_state.portal())
-    ppath = content.getPhysicalPath()
-    relative = ppath[len(root.getPhysicalPath()):]
-    for p in range(len(relative)):
-        now = relative[:p + 1]
-        obj = root.unrestrictedTraverse(now)
-        if ICommunity.providedBy(obj):
-            # Creem carpeta a OwnCloud
-            domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain')
-            path = "/".join(relative)
-            client = getUtility(IOwncloudClient)
-            session = client.admin_connection()
-            session.mkdir(domain.lower() + '/' + path)
-        else:
-            pass
+    portal = api.portal.get()
+    if is_activate_owncloud(portal):
+        portal_state = content.unrestrictedTraverse('@@plone_portal_state')
+        root = getNavigationRootObject(content, portal_state.portal())
+        ppath = content.getPhysicalPath()
+        relative = ppath[len(root.getPhysicalPath()):]
+        for p in range(len(relative)):
+            now = relative[:p + 1]
+            obj = root.unrestrictedTraverse(now)
+            if ICommunity.providedBy(obj):
+                # Creem carpeta a OwnCloud
+                domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain')
+                path = "/".join(relative)
+                client = getUtility(IOwncloudClient)
+                session = client.admin_connection()
+                session.mkdir(domain.lower() + '/' + path)
+            else:
+                pass
 
 
 @grok.subscribe(IFolder, IObjectRemovedEvent)
 def folderRemoved(content, event):
     """ A folder is removed in OwnCloud
     """
-    domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain')
-    portal_state = content.unrestrictedTraverse('@@plone_portal_state')
-    root = getNavigationRootObject(content, portal_state.portal())
-    ppath = content.getPhysicalPath()
-    relative = ppath[len(root.getPhysicalPath()):]
-    path = "/".join(relative)
-    client = getUtility(IOwncloudClient)
-    session = client.admin_connection()
-    try:
-        session.file_info(domain.lower() + '/' + path)
-        session.delete(domain.lower() + '/' + path)
-    except OCSResponseError:
-        pass
-    except HTTPResponseError as err:
-        if err.status_code == 404:
-            logger.warning('The folder {} not has been creation in owncloud'.format(path))
+    portal = api.portal.get()
+    if is_activate_owncloud(portal):
+        domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain')
+        portal_state = content.unrestrictedTraverse('@@plone_portal_state')
+        root = getNavigationRootObject(content, portal_state.portal())
+        ppath = content.getPhysicalPath()
+        relative = ppath[len(root.getPhysicalPath()):]
+        path = "/".join(relative)
+        client = getUtility(IOwncloudClient)
+        session = client.admin_connection()
+        try:
+            session.file_info(domain.lower() + '/' + path)
+            session.delete(domain.lower() + '/' + path)
+        except OCSResponseError:
             pass
+        except HTTPResponseError as err:
+            if err.status_code == 404:
+                logger.warning('The folder {} not has been creation in owncloud'.format(path))
+                pass
