@@ -2,7 +2,7 @@
 from five import grok
 from zope.component import getUtility
 
-from zope.container.interfaces import IObjectAddedEvent
+from zope.container.interfaces import IObjectAddedEvent, IObjectRemovedEvent
 
 from ulearn5.core.content.community import ICommunity
 from ulearn5.owncloud.utilities import IOwncloudClient
@@ -87,4 +87,27 @@ def folderAdded(content, event):
             session = client.admin_connection()
             session.mkdir(domain.lower() + '/' + path)
         else:
+            pass
+
+
+@grok.subscribe(IFolder, IObjectRemovedEvent)
+def folderRemoved(content, event):
+    """ A folder is removed in OwnCloud
+    """
+    domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain')
+    portal_state = content.unrestrictedTraverse('@@plone_portal_state')
+    root = getNavigationRootObject(content, portal_state.portal())
+    ppath = content.getPhysicalPath()
+    relative = ppath[len(root.getPhysicalPath()):]
+    path = "/".join(relative)
+    client = getUtility(IOwncloudClient)
+    session = client.admin_connection()
+    try:
+        session.file_info(domain.lower() + '/' + path)
+        session.delete(domain.lower() + '/' + path)
+    except OCSResponseError:
+        pass
+    except HTTPResponseError as err:
+        if err.status_code == 404:
+            logger.warning('The folder {} not has been creation in owncloud'.format(path))
             pass
