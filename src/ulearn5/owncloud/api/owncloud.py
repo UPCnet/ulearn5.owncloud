@@ -388,7 +388,14 @@ class Client(object):
             was not found
         :raises: HTTPResponseError in case an HTTP error status was returned
         """
-        res = self._make_dav_request('PROPFIND', path, headers={'Depth': '0'})
+        res = self._make_dav_request('PROPFIND', path, headers={'Depth': '0'},  data="""
+                <d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns" xmlns:nc="http://nextcloud.org/ns">
+                  <d:prop>
+                    <oc:fileid />
+                    <oc:owner-display-name />
+                    <oc:owner-id />
+                  </d:prop>
+                </d:propfind>""")
         if res:
             return res[0]
         return None

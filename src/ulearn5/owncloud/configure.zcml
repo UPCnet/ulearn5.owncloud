@@ -37,6 +37,14 @@
       name="ulearn5.owncloud-hiddenprofiles"
       />
 
+   <!-- ++ulearn++owncloud -->
+  <plone:static
+      directory="dist"
+      type="ulearn"
+      name="owncloud"
+      />
+
+
   <browser:page
       name="owncloud-settings"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
@@ -44,5 +52,48 @@
       permission="cmf.ManagePortal"
       layer="ulearn5.owncloud.interfaces.IUlearn5OwncloudLayer"
   />
+
+  <adapter
+      for="Products.CMFCore.interfaces.IFolderish
+           zope.publisher.interfaces.browser.IDefaultBrowserLayer
+           plone.dexterity.interfaces.IDexterityFTI"
+      provides="zope.publisher.interfaces.browser.IBrowserPage"
+      factory="ulearn5.owncloud.content.file_owncloud.AddView"
+      name="ulearn5.owncloud.file_owncloud"/>
+
+<!--   <browser:page
+      name="upload-file"
+      for="ulearn5.owncloud.content.file_owncloud.IFileOwncloud"
+      class="ulearn5.owncloud.content.file_owncloud.FileOwncloudView"
+      attribute="upload_file"
+      permission="cmf.ModifyPortalContent"
+      layer="ulearn5.owncloud.interfaces.IUlearn5OwncloudLayer"
+    /> -->
+
+<!--   <browser:page
+      for="ulearn5.owncloud.content.file_owncloud.IFileOwncloud"
+      name="add"
+      class="ulearn5.owncloud.content.file_owncloud.FileOwncloudAdder"
+      template="content/file_owncloud_templates/fileowncloudadder.pt"
+      permission="cmf.ModifyPortalContent"
+      layer="ulearn5.owncloud.interfaces.IUlearn5OwncloudLayer"
+    />  -->
+
+  <!-- <adapter
+      for="ulearn5.owncloud.content.file_owncloud.IFileOwncloud"
+      provides="zope.publisher.interfaces.browser.IBrowserPage"
+      factory="ulearn5.owncloud.content.file_owncloud.AddView"
+      name="ulearn5.owncloud.file_owncloud"
+      /> -->
+
+
+  <browser:page
+      for="ulearn5.owncloud.content.file_owncloud.IFileOwncloud"
+      name="edit"
+      class="ulearn5.owncloud.content.file_owncloud.FileOwncloudEdit"
+      template="content/file_owncloud_templates/fileowncloudedit.pt"
+      permission="cmf.ModifyPortalContent"
+      layer="ulearn5.owncloud.interfaces.IUlearn5OwncloudLayer"
+    />
 
 </configure>
