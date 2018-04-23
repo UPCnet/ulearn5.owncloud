@@ -1,0 +1,15 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:monkey="http://namespaces.plone.org/monkey"
+    i18n_domain="ulearn5.owncloud">
+
+    <include package="collective.monkeypatcher" />
+
+    <monkey:patch
+        description="Extended configuration for enumerateUsers"
+        module="plone.app.content.browser.contents.rename.RenameActionView"
+        original="__call__"
+        replacement=".patches.__call__"
+        />
+
+</configure>

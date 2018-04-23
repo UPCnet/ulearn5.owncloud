@@ -1,0 +1,153 @@
+class ResponseError(Exception):
+
+    def __init__(self, res, errorType):
+    def get_resource_body(self):
+
+
+class OCSResponseError(ResponseError):
+
+    def __init__(self, res):
+    def get_resource_body(self):
+
+class HTTPResponseError(ResponseError):
+
+    def __init__(self, res):
+
+class ShareInfo(object):
+
+    def __init__(self, share_info):
+    def get_id(self):
+    def get_share_type(self):
+    def get_share_with(self):
+    def get_share_with_displayname(self):
+    def get_path(self):
+    def get_permissions(self):
+    def get_share_time(self):
+    def get_expiration(self):
+    def get_token(self):
+    def get_link(self):
+    def get_uid_owner(self):
+    def get_displayname_owner(self):
+    def __str__(self):
+    def __repr__(self):
+    def _get_int(self, key):
+
+class PublicShare(ShareInfo):
+
+    def __init__(self, share_id, target_file, link, token):
+    def __str__(self):
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class FileInfo(object):
+
+    def __init__(self, path, file_type='file', attributes=None):
+    def get_name(self):
+    def get_path(self):
+    def get_size(self):
+    def get_etag(self):
+    def get_content_type(self):
+    def get_last_modified(self):
+    def is_dir(self):
+    def __str__(self):
+    def __repr__(self):
+
+class Client(object):
+    OCS_BASEPATH = 'ocs/v1.php/'
+    OCS_SERVICE_SHARE = 'apps/files_sharing/api/v1'
+    OCS_SERVICE_PRIVATEDATA = 'privatedata'
+    OCS_SERVICE_CLOUD = 'cloud'
+    OCS_PERMISSION_READ = 1 #Nomes pot veure
+    OCS_PERMISSION_EDIT = 15 #Pot editar, crear, canviar i eliminar
+    OCS_PERMISSION_UPDATE = 2 #Pot editar i modificar, no crear ni eliminar
+    OCS_PERMISSION_CREATE = 4 #Pot crear contingut
+    OCS_PERMISSION_DELETE = 8 #Pot esborrar
+    OCS_PERMISSION_SHARE = 16 #Pot compartir
+    OCS_PERMISSION_ALL = 31 #Pot fer tot
+    OCS_SHARE_TYPE_USER = 0
+    OCS_SHARE_TYPE_GROUP = 1
+    OCS_SHARE_TYPE_LINK = 3
+    OCS_SHARE_TYPE_REMOTE = 6
+
+    def __init__(self, url, **kwargs):
+    def __call__(self):
+    def login(self, user_id, password):
+    def logout(self):
+    def file_info(self, path):
+    def list(self, path, depth=1):
+    def get_file_contents(self, path):
+    def get_file(self, remote_path, local_file=None):
+    def get_directory_as_zip(self, remote_path, local_file):
+    def put_file_contents(self, remote_path, data):
+    def put_file(self, remote_path, local_source_file, **kwargs):
+    def put_directory(self, target_path, local_directory, **kwargs):
+    def _put_file_chunked(self, remote_path, local_source_file, **kwargs):
+    def mkdir(self, path):
+    def delete(self, path):
+    def list_open_remote_share(self):
+    def accept_remote_share(self, share_id):
+    def decline_remote_share(self, share_id):
+    def delete_share(self, share_id):
+    def update_share(self, share_id, **kwargs):
+    def move(self, remote_path_source, remote_path_target):
+    def copy(self, remote_path_source, remote_path_target):
+    def share_file_with_link(self, path, **kwargs):
+    def is_shared(self, path):
+    def get_share(self, share_id):
+    def get_shares(self, path='', **kwargs):
+    def create_user(self, user_name, initial_password):
+    def delete_user(self, user_name):
+    def user_exists(self, user_name):
+    def search_users(self, user_name):
+    def get_users(self):
+    def set_user_attribute(self, user_name, key, value):
+    def add_user_to_group(self, user_name, group_name):
+    def get_user_groups(self, user_name):
+    def user_is_in_group(self, user_name, group_name):
+    def get_user(self, user_name):
+    def remove_user_from_group(self, user_name, group_name):
+    def add_user_to_subadmin_group(self, user_name, group_name):
+    def get_user_subadmin_groups(self, user_name):
+    def user_is_in_subadmin_group(self, user_name, group_name):
+    def share_file_with_user(self, path, user, **kwargs):
+    def create_group(self, group_name):
+    def delete_group(self, group_name):
+    def get_groups(self):
+    def get_group_members(self, group_name):
+    def group_exists(self, group_name):
+    def share_file_with_group(self, path, group, **kwargs):
+    def get_config(self):
+    def get_attribute(self, app=None, key=None):
+    def set_attribute(self, app, key, value):
+    def delete_attribute(self, app, key):
+    def get_apps(self):
+    def get_version(self):
+    def get_capabilities(self):
+    def enable_app(self, appname):
+    def disable_app(self, appname):
+    def _normalize_path(path):
+    def _encode_string(s):
+    def _check_ocs_status(tree, accepted_codes=[100]):
+    def make_ocs_request(self, method, service, action, **kwargs):
+    def _make_ocs_request(self, method, service, action, **kwargs):
+    def _make_dav_request(self, method, path, **kwargs):
+    def _parse_dav_response(self, res):
+    def _parse_dav_element(self, dav_response):
+    def _strip_dav_path(self, path):
+    def _webdav_move_copy(self, remote_path_source, remote_path_target,
+    def _xml_to_dict(self, element):
+    def _get_shareinfo(self, data_el):
+    def _update_capabilities(self):
+ 
