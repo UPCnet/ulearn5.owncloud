@@ -3,6 +3,11 @@ from zope.interface import Interface
 from plone import api
 from ulearn5.owncloud.api.owncloud import Client
 from ulearn5.owncloud.interfaces import IUlearn5OwncloudLayer
+from Products.CMFPlone import PloneMessageFactory as _
+import logging
+
+
+logger = logging.getLogger("ulearn5/owncloud/utilities.py")
 
 
 class IOwncloudClient(Interface):
@@ -26,7 +31,8 @@ class OwncloudClient(object):
         try:
             self._client.login(user, password)
         except:
-            pass
+            message = _(u"your user or password does not exists in OwnCloud server. Or server url is wrong configured.")
+            logger.error(message)
 
     def create_new_connection_admin(self, user, password):
         self.es_url = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_url')
@@ -34,22 +40,22 @@ class OwncloudClient(object):
         try:
             self._adminclient.login(user, password)
         except:
-            pass
+            message = _(u"admin user or admin password or server url is wrong configured in OwnCloud controlpanel.")
+            logger.error(message)
 
     @property
     def connection(self):
+        self._client._session = None
         if self._client._session is None:
-            pass
-            #Falta ver que hacemos cuando no tenemos user y password (que no se ha creado la conecxion al hacer login)
-            #self.create_new_connection(user, password)
+            message = _(u"your client session with OwnCloud server is not ready, please, do logout and login again.")
+            logger.error(message)
         return self._client
 
     @property
     def admin_connection(self):
-        if self._adminclient._session is None:
-            pass
-            #Falta ver que hacemos cuando no tenemos user y password (que no se ha creado la conecxion al hacer login)
-            #self.create_new_connection(user, password)
+        if self._adminclient is None:
+            message = _(u"your client for admin session with OwnCloud server is not ready, please, do logout and login again.")
+            logger.error(message)
         return self._adminclient
 
 grok.global_utility(OwncloudClient)

@@ -13,6 +13,7 @@
   <include package=".browser" />
   <include file="permissions.zcml" />
   <include file="upgrades.zcml" />
+  <include file="patches.zcml" />
 
   <genericsetup:registerProfile
       name="default"

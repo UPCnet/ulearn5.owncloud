@@ -3,6 +3,7 @@ from five import grok
 from zope.component import getUtility
 
 from zope.container.interfaces import IObjectAddedEvent, IObjectRemovedEvent
+from zope.lifecycleevent import IObjectCopiedEvent
 
 from ulearn5.core.content.community import ICommunity
 from ulearn5.owncloud.utilities import IOwncloudClient

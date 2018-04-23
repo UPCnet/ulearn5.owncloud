@@ -6,7 +6,6 @@ from ulearn5.core import _
 from zope.component import getUtility
 from z3c.form import button
 from plone import api
-import transaction
 from Products.statusmessages.interfaces import IStatusMessage
 from ulearn5.core.utils import is_activate_owncloud
 from ulearn5.owncloud.utilities import IOwncloudClient

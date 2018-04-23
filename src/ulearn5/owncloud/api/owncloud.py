@@ -660,6 +660,9 @@ class Client(object):
         """
         return self._make_dav_request('DELETE', path)
 
+    def rename(self, orig, dest):
+        return 
+
     def list_open_remote_share(self):
         """List all pending remote shares
 
