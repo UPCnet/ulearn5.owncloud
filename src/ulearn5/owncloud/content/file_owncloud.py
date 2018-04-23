@@ -20,6 +20,7 @@ from ulearn5.owncloud.api.owncloud import Client
 
 from plone.dexterity.utils import createContentInContainer
 import transaction
+from z3c.form.interfaces import IAddForm, IEditForm
 
 
 class IFileOwncloud(form.Schema):
@@ -30,10 +31,11 @@ class IFileOwncloud(form.Schema):
         required=True
     )
 
+    form.mode(IEditForm, fileid='hidden')
     fileid = schema.TextLine(
         title=_(u'fileid_owncloud_title'),
         description=_(u'fileid_owncloud_description'),
-        required=True
+        required=False
     )
 
 
@@ -55,12 +57,21 @@ class UploadFileOwnCloud(grok.View):
         ppath = self.context.getPhysicalPath()
         relative = ppath[len(root.getPhysicalPath()):]
 
+        # Create file in plone
+        filename = self.request.file.filename
+        obj = createContentInContainer(self.context,
+                                       'ulearn5.owncloud.file_owncloud',
+                                       id=filename,
+                                       title=filename)
+
+        # Save first the file in plone in case there are any with the same name
+        filename = obj.id
+
         # Create file in OwnCloud
         domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain')
         path = "/".join(relative)
         client = getUtility(IOwncloudClient)
         session = client.admin_connection()
-        filename = self.request.file.filename
         remote_path = domain.lower() + '/' + path + '/' + filename
         data = self.request.file.read()
         session.put_file_contents(remote_path, data)
@@ -68,13 +79,8 @@ class UploadFileOwnCloud(grok.View):
         info_file = session.file_info(remote_path)
         fileid = info_file.attributes.get('{http://owncloud.org/ns}fileid')
 
-        # Create file in plone
-        obj = createContentInContainer(self.context,
-                                       'ulearn5.owncloud.file_owncloud',
-                                       id=filename,
-                                       title=filename,
-                                       fileid=fileid)
-        obj.reindexObject()
+        # Save the fileid owncloud in plone file
+        obj.fileid = fileid
         transaction.commit()
 
 
@@ -89,13 +95,26 @@ class FileOwncloudView(grok.View):
     def getTitle(self):
         return self.context.title
 
+    def getURLFileOwncloud(self):
+        domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain')
+        connector_url = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_url')
+
+        portal = api.portal.get()
+        portal_state = self.context.unrestrictedTraverse('@@plone_portal_state')
+        root = getNavigationRootObject(self.context, portal_state.portal())
+        ppath = self.context.getPhysicalPath()
+        relative = ppath[len(root.getPhysicalPath()):]
+        path = '/' + domain.lower() + '/' + "/".join(relative[0:len(relative)-1])
+        url_file_owncloud = connector_url + '/index.php/apps/richdocuments/index?fileId=' + self.context.fileid + '&dir=' + path
+
+        return url_file_owncloud
+
 
 class FileOwncloudAdder(DefaultAddForm):
 
     portal_type = 'ulearn5.owncloud.file_owncloud'
 
     def update(self):
-        print "ADD FORM FIRE!!!!!!!!!!!!"
         DefaultAddForm.update(self)
 
 
@@ -108,101 +127,10 @@ class AddView(DefaultAddView):
         return self.template(self)
 
 
-
-# class FileOwncloudAdder(DefaultAddForm):
-#     grok.name('addOwncloudfile')
-#     grok.context(IFileOwncloud)
-#     grok.require('cmf.ModifyPortalContent')
-
-#     schema = IFileOwncloud
-#     ignoreContext = True
-
-#     def update(self):
-#         super(FileOwncloudAdder, self).update()
-#         import ipdb;ipdb.set_trace()
-#         self.actions['save'].addClass('context')
-
-#     def updateWidgets(self):
-#         super(FileOwncloudAdder, self).updateWidgets()
-#         import ipdb;ipdb.set_trace()
-#         # Override the interface forced 'hidden' to 'input' for add form only
-#         # self.widgets['community_type'].mode = 'input'
-
-#     @button.buttonAndHandler(_(u'Add file owncloud'), name='save')
-#     def handleApply(self, action):
-#         import ipdb;ipdb.set_trace()
-#         data, errors = self.extractData()
-#         if errors:
-#             self.status = self.formErrorsMessage
-#             return
-
-#         nom = data['title']
-
-#         self.request.response.redirect('http://pc47194.estacions.upcnet.es/')
-
-# class FileOwncloudAdder(DefaultAddForm):
-#     grok.name('fileowncloudadder')
-#     grok.context(IFileOwncloud)
-#     grok.require('cmf.ModifyPortalContent')
-
-#     # def render(self):
-#     #     import ipdb;ipdb.set_trace()
-#     #     self.template = ViewPageTemplateFile('file_owncloud_templates/fileowncloudadder.pt')
-#     #     return self.template(self)
-
-
-#     # portal_type = 'ulearn5.owncloud.file_owncloud'
-#     # immediate_view = 'fileowncloudadder'
-#     # schema = IFileOwncloud
-#     # ignoreContext = True
-
-#     def __init__(self, context, request, ti=None):
-#         super(DefaultAddForm, self).__init__(context, request)
-#         import ipdb;ipdb.set_trace()
-#         if ti is not None:
-#             self.ti = ti
-#             self.portal_type = ti.getId()
-#         self.request.form['disable_border'] = True
-
-
-#     def update(self):
-#         import ipdb;ipdb.set_trace()
-#         super(FileOwncloudAdder, self).update()
-#         self.actions['save'].addClass('context')
-
-#     def updateWidgets(self):
-#         import ipdb;ipdb.set_trace()
-
-
-#     @button.buttonAndHandler(_(u'Add file owncloud'), name='save')
-#     def handleApply(self, action):
-#         import ipdb;ipdb.set_trace()
-
-#         data, errors = self.extractData()
-#         if errors:
-#             self.status = self.formErrorsMessage
-#             return
-
-#         nom = data['title']
-
-
-#         self.request.response.redirect(self.context.absolute_url())
-
-# class AddView(DefaultAddView):
-#     form = FileOwncloudAdder
-
-#     def render(self):
-#         import ipdb;ipdb.set_trace()
-#         self.template = ViewPageTemplateFile('file_owncloud_templates/fileowncloudadder.pt')
-#         return self.template(self)
-
 class FileOwncloudEdit(DefaultEditForm):
     grok.name('fileowncloudedit')
     grok.context(IFileOwncloud)
     grok.require('cmf.ModifyPortalContent')
-
-    # schema = IFileOwncloud
-    # ignoreContext = True
 
     def render(self):
         self.template = ViewPageTemplateFile('file_owncloud_templates/fileowncloudedit.pt')
@@ -211,29 +139,18 @@ class FileOwncloudEdit(DefaultEditForm):
     def getTitle(self):
         return self.context.title
 
-    # def render(self):
-    #     import ipdb;ipdb.set_trace()
-    #     self.template = ViewPageTemplateFile('file_owncloud_templates/fileowncloudedit.pt')
-    #     return self.template(self)
+    def getURLFileOwncloud(self):
+        domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain')
+        connector_url = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_url')
 
-    # def update(self):
-    #     super(FileOwncloudEdit, self).update()
-    #     self.actions['save'].addClass('context')
+        portal = api.portal.get()
+        portal_state = self.context.unrestrictedTraverse('@@plone_portal_state')
+        root = getNavigationRootObject(self.context, portal_state.portal())
+        ppath = self.context.getPhysicalPath()
+        relative = ppath[len(root.getPhysicalPath()):]
+        path = '/' + domain.lower() + '/' + "/".join(relative[0:len(relative)-1])
+        url_file_owncloud = connector_url + '/index.php/apps/richdocuments/index?fileId=' + self.context.fileid + '&dir=' + path
 
-    # def updateWidgets(self):
-    #     super(FileOwncloudEdit, self).updateWidgets()
+        return url_file_owncloud
 
-    #     self.widgets['title'].value = self.context.title
-
-
-    # @button.buttonAndHandler(_(u'Edit file owncloud'), name='save')
-    # def handleApply(self, action):
-    #     data, errors = self.extractData()
-    #     if errors:
-    #         self.status = self.formErrorsMessage
-    #         return
-    #     import ipdb;ipdb.set_trace()
-    #     nom = data['title']
-
-
-    #     self.request.response.redirect(self.context.absolute_url())
+        # self.request.response.redirect(url_file_owncloud, 302)
