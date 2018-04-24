@@ -14,7 +14,7 @@ import transaction
 
 from plone import api
 from ulearn5.core.utils import is_activate_owncloud
-from ulearn5.owncloud import folderRenamed
+from ulearn5.owncloud import objectRenamed
 
 logger = logging.getLogger(__name__)
 
@@ -71,11 +71,12 @@ def __call__(self):
                 # the rename will have already triggered a reindex
                 obj.reindexObject()
             portal = api.portal.get()
-            if is_activate_owncloud(portal):
+            #import ipdb; ipdb.set_trace()
+            if is_activate_owncloud(portal) and (obj.Type() == "Folder" or obj.Type() == "File Owncloud"):
                 domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain')
                 username = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_username')
                 password = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_password')
-                folderRenamed(self, obj, obid, domain, username, password)
+                objectRenamed(self, obj, obid, domain, username, password)
         except ConflictError:
             raise
         except Exception as e:
