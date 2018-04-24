@@ -13,6 +13,41 @@
         <script type="text/javascript" tal:content="string: UPLOAD_URL = '${context/absolute_url}/upload-file'" />
         <link rel="stylesheet" tal:attributes="href string:$portal_url/++ulearn++owncloud/dropzone.css" />
 
+        <div>
+          <legend i18n:translate="title_create_new_file">Create a new file</legend>
+          <div class="help" i18n:translate="help_create_new_file">
+              Click in the image to create a document, spreadsheet or presentation.
+          </div>
+
+          <div tal:define="CREATE_NEW_FILE_URL string:${context/absolute_url}/create-file">
+
+            <a title="Create Document" aria-label="Create Document" data-filetype="x-office-document" aria-hidden="true" tal:attributes="href string:${context/absolute_url}/create-file" style="font-size:48px;color:#007BC0">
+                        <i class="fa fa-file-text-o icons" s></i>
+            </a>
+
+            <a title="Create Spreadsheet" aria-label="Create Spreadsheet" data-filetype="x-office-spreadsheet" aria-hidden="true" href="http://pc47194.estacions.upcnet.es/testnctancada/documents" style="font-size:48px;color:#9abd4e">
+                <i class="fa fa-file-excel-o icons"></i>
+            </a>
+
+            <a title="Create Presentation" aria-label="Create Presentation" data-filetype="x-office-presentation" aria-hidden="true" href="http://pc47194.estacions.upcnet.es/testnctancada/documents" style="font-size:48px;color:#F0965F">
+                <i class="fa fa-file-powerpoint-o icons" s></i>
+            </a>
+
+            <form tal:attributes="action CREATE_NEW_FILE_URL" id="new_file">
+              <div class="fallback">
+                <input type="radio" name="type" value="odt" checked> Document<br>
+                <input type="radio" name="type" value="ods"> Spreadsheet<br>
+                <input type="radio" name="type" value="odp"> Presentation <br>
+                <input name="file" type="text" />
+              </div>
+            </form>
+            <button type="submit" form="new_file" value="Submit">Submit</button>
+          </div>
+
+        </div>
+
+        <br>
+
         <div id="zip-form"
             tal:define="UPLOAD_URL string:${context/absolute_url}/upload-file">
 

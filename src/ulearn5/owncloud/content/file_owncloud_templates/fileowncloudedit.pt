@@ -11,9 +11,29 @@
   <metal:content-core fill-slot="content-core">
     <metal:block define-macro="content-core">
 
-      <h2 i18n:translate="file_owncloud_title">Edit File Owncloud</h2>
+      <!-- <h2 i18n:translate="file_owncloud_title">Edit File Owncloud</h2>
       <p tal:content="view/getTitle"></p>
       <p tal:content="view/getURLFileOwncloud"></p>
+ -->
+<!--       <h1 tal:define="label view/label|nothing"
+            tal:omit-tag="not:label"
+            tal:content="label" /> -->
+
+        <div class="description"
+           tal:condition="view/description | nothing"
+           tal:content="structure view/description">Form description</div>
+
+
+
+        <metal:block use-macro="context/@@ploneform-macros/titlelessform" />
+
+              <a id="file_owncloud_edit" href="#" target="_blank"
+         tal:attributes="href view/getURLFileOwncloud;
+                         title view/getTitle">
+          <tal:file content="view/getTitle">
+            File
+          </tal:file>
+      </a>
 
     </metal:block>
   </metal:content-core>

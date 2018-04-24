@@ -22,6 +22,13 @@ from plone.dexterity.utils import createContentInContainer
 import transaction
 from z3c.form.interfaces import IAddForm, IEditForm
 
+from Products.statusmessages.interfaces import IStatusMessage
+from zope.event import notify
+from plone.dexterity.events import EditBegunEvent
+from plone.dexterity.events import EditCancelledEvent
+from plone.dexterity.events import EditFinishedEvent
+import requests
+
 
 class IFileOwncloud(form.Schema):
 
@@ -83,6 +90,45 @@ class UploadFileOwnCloud(grok.View):
         obj.fileid = fileid
         transaction.commit()
 
+class CreateFileTextOwnCloud(grok.View):
+    grok.context(IFolderish)
+    grok.name('create-file')
+
+    def render(self):
+        """ AJAX callback for Uploadify """
+
+        portal = api.portal.get()
+        portal_state = self.context.unrestrictedTraverse('@@plone_portal_state')
+        root = getNavigationRootObject(self.context, portal_state.portal())
+        ppath = self.context.getPhysicalPath()
+        relative = ppath[len(root.getPhysicalPath()):]
+
+        # Create file in plone
+        file_id = self.request.form['file'] + '.' + self.request.form['type']
+        filename = self.request.form['file']
+        obj = createContentInContainer(self.context,
+                                       'ulearn5.owncloud.file_owncloud',
+                                       id=file_id,
+                                       title=filename)
+
+        # Save first the file in plone in case there are any with the same name
+        filename = obj.id
+
+        # Create file in OwnCloud
+        domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain')
+        path = "/".join(relative)
+        client = getUtility(IOwncloudClient)
+        session = client.admin_connection()
+        remote_path = domain.lower() + '/' + path + '/' + filename
+        data = ''
+        session.put_file_contents(remote_path, data)
+
+        info_file = session.file_info(remote_path)
+        fileid = info_file.attributes.get('{http://owncloud.org/ns}fileid')
+
+        # Save the fileid owncloud in plone file
+        obj.fileid = fileid
+        transaction.commit()
 
 class FileOwncloudView(grok.View):
     grok.context(IFileOwncloud)
@@ -154,3 +200,24 @@ class FileOwncloudEdit(DefaultEditForm):
         return url_file_owncloud
 
         # self.request.response.redirect(url_file_owncloud, 302)
+
+    @button.buttonAndHandler(_(u'Save'), name='save')
+    def handleApply(self, action):
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        self.applyChanges(data)
+        IStatusMessage(self.request).addStatusMessage(
+            self.success_message, "info"
+        )
+        self.request.response.redirect(self.nextURL())
+        notify(EditFinishedEvent(self.context))
+
+    @button.buttonAndHandler(_(u'Cancel'), name='cancel')
+    def handleCancel(self, action):
+        IStatusMessage(self.request).addStatusMessage(
+            _(u"Edit cancelled"), "info"
+        )
+        self.request.response.redirect(self.nextURL())
+        notify(EditCancelledEvent(self.context))
