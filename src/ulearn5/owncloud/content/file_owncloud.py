@@ -28,6 +28,7 @@ from plone.dexterity.events import EditBegunEvent
 from plone.dexterity.events import EditCancelledEvent
 from plone.dexterity.events import EditFinishedEvent
 import requests
+import webbrowser
 
 
 class IFileOwncloud(form.Schema):
@@ -129,6 +130,12 @@ class CreateFileTextOwnCloud(grok.View):
         # Save the fileid owncloud in plone file
         obj.fileid = fileid
         transaction.commit()
+
+        connector_url = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_url')
+        url_file_owncloud = connector_url + '/index.php/apps/richdocuments/index?fileId=' + fileid + '&dir=' + path
+
+        webbrowser.open_new_tab(url_file_owncloud)
+        # return self.request.response.redirect(url_file_owncloud)
 
 class FileOwncloudView(grok.View):
     grok.context(IFileOwncloud)

@@ -16,6 +16,7 @@ import os
 import math
 import six
 from six.moves.urllib import parse
+import lxml.html
 
 
 class ResponseError(Exception):
@@ -379,6 +380,52 @@ class Client(object):
         self._session.close()
         return True
 
+
+    def login_cas(self, user_id, password):
+        """Authenticate to ownCloud behind CAS (Central Authentication Service).
+        This will create a session on the server.
+
+        :param user_id: user id
+        :param password: password
+        :raises: HTTPResponseError in case an HTTP error status was returned
+        """
+
+        # Get the hidden form fields needed to log in (CSRF token)
+        self._session = requests.session()
+        cas_url = self._session.get(self.url).url # follow redirection
+        login = self._session.get(cas_url)
+        login_html = lxml.html.fromstring(login.text)
+        hidden_inputs = login_html.xpath(r'//form//input[@type="hidden"]')
+        #form = {x.attrib["name"]: x.attrib["value"] for x in hidden_inputs}
+        form = {
+            'requesttoken': hidden_inputs[-1].value,
+            'timezone-offset': 2,
+            'timezone': 'Europe/Berlin',
+        }
+        # Fill out the form with username and password, then connect
+        form['username'] = user_id
+        form['password'] = password
+
+        headers = {
+            'Cookie': 'oc_sessionPassphrase=' + self._session.cookies['oc_sessionPassphrase'] + '; oca8t2n4dl3e=' + self._session.cookies['oca8t2n4dl3e'],
+            'Host': 'owncompre.upc.edu',
+            'Upgrade-Insecure-Requests': '1'
+        }
+        response = self._session.post(cas_url, data=form, headers=headers)
+
+        try:
+            self.login(user_id, password)
+            self._update_capabilities()
+        except HTTPResponseError as e:
+            self._session.close()
+            self._session = None
+            raise e
+
+        self._session = requests.session()
+        self._session.verify = self._verify_certs
+        self._session.auth = (user_id, password)
+
+
     def file_info(self, path):
         """Returns the file info for the given remote file
 
@@ -661,7 +708,7 @@ class Client(object):
         return self._make_dav_request('DELETE', path)
 
     def rename(self, orig, dest):
-        return 
+        return
 
     def list_open_remote_share(self):
         """List all pending remote shares
