@@ -392,6 +392,7 @@ class Client(object):
 
         # Get the hidden form fields needed to log in (CSRF token)
         self._session = requests.session()
+        self._session.verify = self._verify_certs
         cas_url = self._session.get(self.url).url # follow redirection
         login = self._session.get(cas_url)
         login_html = lxml.html.fromstring(login.text)
@@ -403,18 +404,28 @@ class Client(object):
             'timezone': 'Europe/Berlin',
         }
         # Fill out the form with username and password, then connect
-        form['username'] = user_id
+        form['user'] = user_id
         form['password'] = password
 
         headers = {
             'Cookie': 'oc_sessionPassphrase=' + self._session.cookies['oc_sessionPassphrase'] + '; oca8t2n4dl3e=' + self._session.cookies['oca8t2n4dl3e'],
             'Host': 'owncompre.upc.edu',
-            'Upgrade-Insecure-Requests': '1'
+            'Upgrade-Insecure-Requests': '1',
+            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Accept-Language': 'es,ca;q=0.9,en-US;q=0.8,en;q=0.7,gl;q=0.6',
+            'Cache-Control': 'no-cache',
+            'Connection': 'keep-alive',
+            'Content-Length': '181',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Origin': 'null',
+            'Pragma': 'no-cache'
         }
         response = self._session.post(cas_url, data=form, headers=headers)
 
         try:
-            self.login(user_id, password)
+            #self.login(user_id, password)
             self._update_capabilities()
         except HTTPResponseError as e:
             self._session.close()
