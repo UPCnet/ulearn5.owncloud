@@ -2,7 +2,7 @@
 from five import grok
 from zope.component import getUtility
 from zope.container.interfaces import IObjectAddedEvent, IObjectRemovedEvent
-from zope.lifecycleevent import IObjectMovedEvent, IObjectCopiedEvent
+from zope.lifecycleevent import IObjectMovedEvent
 
 from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.app.contenttypes.interfaces import IFolder

@@ -10,7 +10,6 @@
   <i18n:registerTranslations directory="locales" />
 
   <grok:grok package="." />
-  <include package=".browser" />
   <include file="permissions.zcml" />
   <include file="upgrades.zcml" />
   <include file="patches.zcml" />

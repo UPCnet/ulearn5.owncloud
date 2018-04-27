@@ -81,6 +81,20 @@ Example for uploading a file then sharing with link:
 
     print "Here is your link: " + link_info.get_link()
 
+Example for do actions with OwnCloud utility
+
+.. code-block:: python
+
+    from ulearn5.owncloud.utilities import IOwncloudClient
+    
+    from zope.component import getUtility
+
+    client = getUtility(IOwncloudClient)
+
+    valor = client.connection()
+
+    valor.list('Documents', depth=1)
+
 Installation
 ------------
 
@@ -95,20 +109,6 @@ Install ulearn5.owncloud by adding it to your buildout::
 
 
 and then running ``bin/buildout``
-
-Building the documentation
-==========================
-
-To build the documentation, you will need to install Sphinx and docutil.
-Then run the following commands:
-
-.. code-block:: bash
-
-    $ sphinx-apidoc -e -f -o docs/source owncloud/ owncloud/test
-    $ cd docs
-    $ make html
-
-You can then find the documentation inside of "doc/build/html".
 
 
 License

@@ -71,7 +71,6 @@ def __call__(self):
                 # the rename will have already triggered a reindex
                 obj.reindexObject()
             portal = api.portal.get()
-            #import ipdb; ipdb.set_trace()
             if is_activate_owncloud(portal) and (obj.Type() == "Folder" or obj.Type() == "File Owncloud"):
                 domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain')
                 username = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_username')
@@ -81,8 +80,7 @@ def __call__(self):
             raise
         except Exception as e:
             sp.rollback()
-            logger.error(u'Error renaming "{title}": "{exception}"'
-                .format(title=title.decode('utf8'), exception=e))
+            logger.error(u'Error renaming "{title}": "{exception}"'.format(title=title.decode('utf8'), exception=e))
             self.errors.append(_(u'Error renaming ${title}', mapping={
                 'title': title.decode('utf8')}))
 

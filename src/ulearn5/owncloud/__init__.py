@@ -14,7 +14,7 @@ _ = MessageFactory('ulearn5.owncloud')
 
 
 def objectRenamed(self, content, id_source, domain, username, password):
-    """ A folder is renamed in OwnCloud """
+    """Object is renamed in OwnCloud."""
     portal_state = content.unrestrictedTraverse('@@plone_portal_state')
     root = getNavigationRootObject(content, portal_state.portal())
     ppath = content.getPhysicalPath()
