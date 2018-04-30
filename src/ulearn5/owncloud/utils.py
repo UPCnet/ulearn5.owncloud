@@ -2,13 +2,14 @@
 from plone import api
 from zope.component import getUtility
 from ulearn5.owncloud.utilities import IOwncloudClient
+from plone.app.layout.navigation.root import getNavigationRootObject
 
 
 def create_file_in_owncloud(filename, path, content):
     # Find destination to put file in OwnCloud
     domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain')
     remote_path = domain.lower() + '/' + path + '/' + filename
-    
+
     # Create session with admin user in OwnCloud and put file
     client = getUtility(IOwncloudClient)
     session = client.admin_connection()
@@ -17,7 +18,7 @@ def create_file_in_owncloud(filename, path, content):
     fileid = info_file.attributes.get('{http://owncloud.org/ns}fileid')
 
     return fileid
-    
+
 def construct_url_for_owncloud(context):
     domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain')
     connector_url = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_url')
