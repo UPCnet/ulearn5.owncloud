@@ -72,13 +72,12 @@ class OCSettingsEditForm(controlpanel.RegistryEditForm):
             return
         self.applyChanges(data)
 
-        #import ipdb; ipdb.set_trace()
         if is_activate_owncloud(self):
             client = getUtility(IOwncloudClient)
+            client.create_new_connection_admin(data['connector_username'], data['connector_password'])
             session = client.admin_connection()
-            # Create structure folders community in domain
-            #aa = data.get('domain')
-            domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain')
+
+            domain = data['connector_domain']
             try:
                 session.file_info(domain.lower())
 
