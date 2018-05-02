@@ -54,8 +54,10 @@ class OwncloudClient(object):
     @property
     def admin_connection(self):
         if self._adminclient is None:
-            message = _(u"your client for admin session with OwnCloud server is not ready, please, do logout and login again.")
-            logger.error(message)
+            # Connect admin user with OwnCloud in WebDAV mode
+            username = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_username')
+            password = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_password')
+            self.create_new_connection_admin(username, password)
         return self._adminclient
 
 grok.global_utility(OwncloudClient)
