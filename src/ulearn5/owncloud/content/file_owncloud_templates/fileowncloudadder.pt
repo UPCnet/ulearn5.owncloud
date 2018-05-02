@@ -1,96 +1,146 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
-      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      lang="en"
-      metal:use-macro="context/main_template/macros/master"
-      i18n:domain="ulearn5.owncloud">
-<body>
-
-<metal:main fill-slot="content-core">
-    <metal:content-core define-macro="content-core">
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  lang="en"
+  metal:use-macro="context/main_template/macros/master"
+  i18n:domain="ulearn5.owncloud">
+  <body>
+    <metal:main fill-slot="content-core">
+      <metal:content-core define-macro="content-core">
         <script type="text/javascript" tal:attributes="src string:$portal_url/++ulearn++owncloud/dropzone.js"></script>
-        <script type="text/javascript" tal:content="string: UPLOAD_URL = '${context/absolute_url}/upload-file'" />
+        <script type="text/javascript" tal:content="string: UPLOAD_URL = '${context/absolute_url}/upload-file'"></script>
         <link rel="stylesheet" tal:attributes="href string:$portal_url/++ulearn++owncloud/dropzone.css" />
-
-        <div>
-          <legend i18n:translate="title_create_new_file">Create a new file</legend>
-          <div class="help" i18n:translate="help_create_new_file">
-              Click in the image to create a document, spreadsheet or presentation.
-          </div>
-
-          <div tal:define="CREATE_NEW_FILE_URL string:${context/absolute_url}/create-file">
-
-            <a title="Create Document" aria-label="Create Document" data-filetype="x-office-document" aria-hidden="true" tal:attributes="href string:${context/absolute_url}/create-file" style="font-size:48px;color:#007BC0">
-                        <i class="fa fa-file-text-o icons" s></i>
-            </a>
-
-            <a title="Create Spreadsheet" aria-label="Create Spreadsheet" data-filetype="x-office-spreadsheet" aria-hidden="true" href="http://pc47194.estacions.upcnet.es/testnctancada/documents" style="font-size:48px;color:#9abd4e">
-                <i class="fa fa-file-excel-o icons"></i>
-            </a>
-
-            <a title="Create Presentation" aria-label="Create Presentation" data-filetype="x-office-presentation" aria-hidden="true" href="http://pc47194.estacions.upcnet.es/testnctancada/documents" style="font-size:48px;color:#F0965F">
-                <i class="fa fa-file-powerpoint-o icons" s></i>
-            </a>
-
-            <form tal:attributes="action CREATE_NEW_FILE_URL" id="new_file">
-              <div class="fallback">
-                <input type="radio" name="type" value="odt" checked> Document<br>
-                <input type="radio" name="type" value="ods"> Spreadsheet<br>
-                <input type="radio" name="type" value="odp"> Presentation <br>
-                <input name="file" type="text" />
-              </div>
-            </form>
-            <button type="submit" form="new_file" value="Submit">Submit</button>
-          </div>
-
-        </div>
-
-        <br>
-
-        <div id="zip-form"
-            tal:define="UPLOAD_URL string:${context/absolute_url}/upload-file">
-
-          <!-- uploadify -->
-          <fieldset id="uploadify">
-              <legend i18n:translate="title_uploading_files">Multi/single file upload</legend>
-              <div class="help" i18n:translate="help_uploading_files">
-                  Use this form for uploading a single or multiple files.
-              </div>
-
+        <style>
+          label > input{ /* HIDE RADIO */
+            visibility: hidden; /* Makes input not-clickable */
+            position: absolute; /* Remove input from document flow */
+          }
+          .odt {
+            font-size:20px;
+            border-radius: 2px;
+            border: 1px solid rgba(0, 123, 192, 1);
+            color: rgba(0, 123, 192, 1);
+            padding: 0.2rem 1rem 0.2rem 1rem;
+            margin-right: 0.5rem;
+            background: white;
+          }
+          input:checked + .odt{
+            background: rgba(0, 123, 192, 1);
+            color:white;
+          }
+          .odt > span {
+            font-size:18px;
+          }
+          .ods {
+            font-size:20px;
+            border-radius: 2px;
+            border: 1px solid rgba(154, 189, 78, 1);
+            color: rgba(154, 189, 78, 1);
+            padding: 0.2rem 1rem 0.2rem 1rem;
+            margin-right: 0.5rem;
+            background: white;
+          }
+          input:checked + .ods{
+            background: rgba(154, 189, 78, 1);
+            color:white;
+          }
+          .ods > span {
+            font-size:18px;
+          }
+          .odp {
+            font-size:20px;
+            border-radius: 2px;
+            border: 1px solid rgba(240, 150, 95, 1);
+            color: rgba(240, 150, 95, 1);
+            padding: 0.2rem 1rem 0.2rem 1rem;
+            background: white;
+          }
+          input:checked + .odp{
+            background: rgba(240, 150, 95, 1);
+            color:white;
+          }
+          .odp > span {
+            font-size:18px;
+          }
+          #upload-message {
+            display: none;
+            padding: 1rem;
+          }
+        </style>
+        <div class="pat-autotoc autotabs" data-pat-autotoc="section:fieldset;levels:legend;">
+          <fieldset>
+            <h4 i18n:translate="help_create_new_file">Click in the image for choose beetwen document, spreadsheet or presentation</h4>
+            <br/>
+            <legend i18n:translate="title_create_new_file">Create a new empty file</legend>
+            <div id="single-new-form" tal:define="CREATE_NEW_FILE_URL string:${context/absolute_url}/create-file">
+              <form tal:attributes="action CREATE_NEW_FILE_URL" id="new_file">
+                <div>
+                  <label aria-label="Create Document" aria-hidden="true">
+                    <input type="radio" name="type" value="odt" checked>
+                    <div class="odt">
+                      <i class="fa fa-file-text-o icons"></i>
+                      <span>Document</span>
+                    </div>
+                  </label>
+                  <label aria-label="Create Spreadsheet" aria-hidden="true">
+                    <input type="radio" name="type" value="ods">
+                    <div class="ods">
+                      <i class="fa fa-file-excel-o icons"></i>
+                      <span>Spreadsheet</span>
+                    </div>
+                  </label>
+                  <label aria-label="Create Presentation" aria-hidden="true">
+                    <input type="radio" name="type" value="odp">
+                    <div class="odp">
+                      <i class="fa fa-file-powerpoint-o icons"></i>
+                      <span>Presentation</span>
+                    </div>
+                  </label>
+                </div>
+                <br/>
+                <label>Enter name for new file:</label>
+                <input type="text" name="file" class="form-control" aria-label="Enter name for new file" required/>
+              </form>
+              <br/>
+              <button class="btn submit-widget button-field context" type="submit" form="new_file" value="Afegir">Afegir</button>
+              <a class="btn pull-right submit-widget button-field context" tal:attributes="href string:${context/absolute_url}/${request/subpath|nothing}" i18n:translate="back_to_directory">Tornar al directori</a>
+            </div>
+          </fieldset>
+          <fieldset>
+            <h4 i18n:translate="help_uploading_files">Use this form for uploading a single or multiple files to owncloud</h4>
+            <br/>
+            <legend i18n:translate="title_upload_new_file">Upload file/s from your computer</legend>
+            <div id="zip-form" tal:define="UPLOAD_URL string:${context/absolute_url}/upload-file">
               <form tal:attributes="action UPLOAD_URL" class="dropzone" id="dropzone" init="foo">
                 <div class="dz-message" i18n:translate="click_to_upload">Drop file here or click to upload</div>
                 <div class="fallback">
-                    <input name="file" type="file" multiple />
+                  <input name="file" type="file" multiple />
                 </div>
                 <input type="hidden" name="subpath" tal:attributes="value request/subpath | nothing" />
               </form>
-              <div id="upload-message"></div>
+              <small i18n:translate="delete_uploaded_files" class="bg-warning">Per realitzar accions sobre el fitxer/fitxers pujats torna al directori</small>
+              <br/>
+              <div>
+                <h5 id="upload-message" class="bg-success"></h5>
+              </div>
+              <br/>
+              <a class="btn pull-right submit-widget button-field context" tal:attributes="href string:${context/absolute_url}/${request/subpath|nothing}" i18n:translate="back_to_directory">Tornar al directori</a>
+            </div>
           </fieldset>
         </div>
-
-        <div style="clear: both"></div>
-
-        <div class="actions">
-            <a tal:attributes="href string:${context/absolute_url}/${request/subpath|nothing}" i18n:translate="back_to_directory">Back to file/directory listing</a>
-        </div>
-
         <script type="text/javascript">
-            Dropzone.autoDiscover = false;
-            $(document).ready(function() {
-
-                $("#dropzone").dropzone({
-                    url: UPLOAD_URL,
-                    maxFilesize: 50,
-                    addRemoveLinks: false,
-                    parallelUploads: 1
-                });
-            });
+          Dropzone.autoDiscover = false;
+          $(document).ready(function() {
+              $("#dropzone").dropzone({
+                  url: UPLOAD_URL,
+                  maxFilesize: 50,
+                  addRemoveLinks: false,
+                  parallelUploads: 1
+              });
+          });
         </script>
-
-  </metal:content-core>
-</metal:main>
-
-</body>
+      </metal:content-core>
+    </metal:main>
+  </body>
 </html>
-

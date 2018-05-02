@@ -962,6 +962,8 @@ var Dropzone = function (_Emitter) {
             file._removeLink.textContent = this.options.dictRemoveFile;
           }
           if (file.previewElement) {
+            document.getElementById('upload-message').innerText = "Your files are added succesfully";
+            document.getElementById("upload-message").style.display = "block";
             return file.previewElement.classList.add("dz-complete");
           }
         },
