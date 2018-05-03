@@ -1,0 +1,55 @@
+label > input{ /* HIDE RADIO */
+  visibility: hidden; /* Makes input not-clickable */
+  position: absolute; /* Remove input from document flow */
+}
+.odt {
+  font-size:20px;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 123, 192, 1);
+  color: rgba(0, 123, 192, 1);
+  padding: 0.2rem 1rem 0.2rem 1rem;
+  margin-right: 0.5rem;
+  background: white;
+}
+input:checked + .odt{
+  background: rgba(0, 123, 192, 1);
+  color:white;
+}
+.odt > span {
+  font-size:18px;
+}
+.ods {
+  font-size:20px;
+  border-radius: 2px;
+  border: 1px solid rgba(154, 189, 78, 1);
+  color: rgba(154, 189, 78, 1);
+  padding: 0.2rem 1rem 0.2rem 1rem;
+  margin-right: 0.5rem;
+  background: white;
+}
+input:checked + .ods{
+  background: rgba(154, 189, 78, 1);
+  color:white;
+}
+.ods > span {
+  font-size:18px;
+}
+.odp {
+  font-size:20px;
+  border-radius: 2px;
+  border: 1px solid rgba(240, 150, 95, 1);
+  color: rgba(240, 150, 95, 1);
+  padding: 0.2rem 1rem 0.2rem 1rem;
+  background: white;
+}
+input:checked + .odp{
+  background: rgba(240, 150, 95, 1);
+  color:white;
+}
+.odp > span {
+  font-size:18px;
+}
+#upload-message {
+  display: none;
+  padding: 1rem;
+}
