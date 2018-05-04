@@ -12,9 +12,6 @@
         <script type="text/javascript" tal:content="string: UPLOAD_URL = '${context/absolute_url}/upload-file'"></script>
         <link rel="stylesheet" tal:attributes="href string:$portal_url/++ulearn++owncloud/dropzone.css" />
         <link rel="stylesheet" tal:attributes="href string:$portal_url/++ulearn++owncloud/adder.css" />
-        <style>
-
-        </style>
         <div class="pat-autotoc autotabs" data-pat-autotoc="section:fieldset;levels:legend;">
           <fieldset>
             <h4 i18n:translate="help_create_new_file">Click in the image for choose beetwen document, spreadsheet or presentation</h4>

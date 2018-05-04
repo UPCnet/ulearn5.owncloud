@@ -1811,7 +1811,7 @@ class Client(object):
             method,
             self._webdav_url + parse.quote(self._encode_string(path)),
             **kwargs
-        )
+            )
         if self._debug:
             print('DAV status: %i' % res.status_code)
         if res.status_code in [200, 207]:

@@ -11,6 +11,7 @@ from plone import api
 from ulearn5.core.utils import is_activate_owncloud
 from ulearn5.core.content.community import ICommunity
 from ulearn5.owncloud.utilities import IOwncloudClient
+from ulearn5.owncloud.utils import get_domain
 from ulearn5.owncloud.api.owncloud import HTTPResponseError, OCSResponseError
 from ulearn5.owncloud.content.file_owncloud import IFileOwncloud
 
@@ -69,17 +70,17 @@ def folderAdded(content, event):
         root = getNavigationRootObject(content, portal_state.portal())
         ppath = content.getPhysicalPath()
         relative = ppath[len(root.getPhysicalPath()):]
+        path = "/".join(relative)
         for p in range(len(relative)):
             now = relative[:p + 1]
             obj = root.unrestrictedTraverse(now)
             if ICommunity.providedBy(obj):
                 # Creem carpeta a OwnCloud
-                domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain')
-                path = "/".join(relative)
                 client = getUtility(IOwncloudClient)
                 session = client.admin_connection()
                 try:
-                    session.mkdir(domain.lower() + '/' + path)
+                    domain = get_domain()
+                    session.mkdir(domain + '/' + path)
                 except OCSResponseError:
                     pass
                 except HTTPResponseError as err:
@@ -94,7 +95,6 @@ def folderRemoved(content, event):
     """Folder is removed in OwnCloud."""
     portal = api.portal.get()
     if is_activate_owncloud(portal):
-        domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain')
         portal_state = content.unrestrictedTraverse('@@plone_portal_state')
         root = getNavigationRootObject(content, portal_state.portal())
         ppath = content.getPhysicalPath()
@@ -103,31 +103,9 @@ def folderRemoved(content, event):
         client = getUtility(IOwncloudClient)
         session = client.admin_connection()
         try:
-            session.file_info(domain.lower() + '/' + path)
-            session.delete(domain.lower() + '/' + path)
-        except OCSResponseError:
-            pass
-        except HTTPResponseError as err:
-            if err.status_code == 404:
-                logger.warning('The object {} has not been removed in owncloud'.format(path))
-
-
-@grok.subscribe(IFileOwncloud, IObjectRemovedEvent)
-def fileRemoved(content, event):
-    """File is removed in OwnCloud."""
-    portal = api.portal.get()
-    if is_activate_owncloud(portal):
-        domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain')
-        portal_state = content.unrestrictedTraverse('@@plone_portal_state')
-        root = getNavigationRootObject(content, portal_state.portal())
-        ppath = content.getPhysicalPath()
-        relative = ppath[len(root.getPhysicalPath()):]
-        path = "/".join(relative)
-        client = getUtility(IOwncloudClient)
-        session = client.admin_connection()
-        try:
-            session.file_info(domain.lower() + '/' + path)
-            session.delete(domain.lower() + '/' + path)
+            domain = get_domain()
+            session.file_info(domain + '/' + path)
+            session.delete(domain + '/' + path)
         except OCSResponseError:
             pass
         except HTTPResponseError as err:
@@ -145,7 +123,7 @@ def folderMoved(content, event):
         oldParent = event.oldParent
         newParent = event.newParent
         if newParent is not None and oldParent is not None:
-            domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain').lower()
+            domain = get_domain()
             # COPY / MOVE CASE
             old = oldParent.getPhysicalPath()
             origin_path = domain + "/" + "/".join(old[len(root.getPhysicalPath()):]) + "/" + content.id
@@ -177,7 +155,7 @@ def fileMoved(content, event):
         oldParent = event.oldParent
         newParent = event.newParent
         if newParent is not None and oldParent is not None:
-            domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain').lower()
+            domain = get_domain()
             # MOVE CASE
             old = oldParent.getPhysicalPath()
             origin_path = domain + "/" + "/".join(old[len(root.getPhysicalPath()):]) + "/" + content.id
@@ -205,8 +183,8 @@ def fileCopied(content, event):
     portal = api.portal.get()
     if is_activate_owncloud(portal):
         root = api.portal.get()
-        domain = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_domain').lower()
         if content.fileid is not None:
+            domain = get_domain()
             # COPY CASE
             new = content.getPhysicalPath()
             target_path = domain + "/" + "/".join(new[len(root.getPhysicalPath()):])
@@ -239,3 +217,26 @@ def fileCopied(content, event):
         else:
             # ADD CASE
             pass
+
+
+@grok.subscribe(IFileOwncloud, IObjectRemovedEvent)
+def fileRemoved(content, event):
+    """File is removed in OwnCloud."""
+    portal = api.portal.get()
+    if is_activate_owncloud(portal):
+        portal_state = content.unrestrictedTraverse('@@plone_portal_state')
+        root = getNavigationRootObject(content, portal_state.portal())
+        ppath = content.getPhysicalPath()
+        relative = ppath[len(root.getPhysicalPath()):]
+        path = "/".join(relative)
+        client = getUtility(IOwncloudClient)
+        session = client.admin_connection()
+        try:
+            domain = get_domain()
+            session.file_info(domain + '/' + path)
+            session.delete(domain + '/' + path)
+        except OCSResponseError:
+            pass
+        except HTTPResponseError as err:
+            if err.status_code == 404:
+                logger.warning('The object {} has not been removed in owncloud'.format(path))
