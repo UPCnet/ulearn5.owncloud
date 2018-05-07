@@ -1,0 +1,106 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: DOMAIN\n"
+
+#: ../content/file_owncloud.py:193
+#: ../controlpanel.py:101
+msgid "Cancel"
+msgstr ""
+
+#: ../controlpanel.py:97
+msgid "Changes saved"
+msgstr ""
+
+#: ../controlpanel.py:20
+msgid "Connection URL of storage"
+msgstr ""
+
+#: ../controlpanel.py:30
+msgid "Connector mode"
+msgstr ""
+
+#: ../controlpanel.py:31
+msgid "Connector mode (defaults to 'owncloud')"
+msgstr ""
+
+#: ../controlpanel.py:48
+msgid "Domain manage communities in OwnCloud"
+msgstr ""
+
+#: ../content/file_owncloud.py:197
+#: ../controlpanel.py:103
+msgid "Edit cancelled"
+msgstr ""
+
+#: ../patches.py:84
+msgid "Error renaming ${title}"
+msgstr ""
+
+#: ../controlpanel.py:58
+msgid "OwnCloud Settings"
+msgstr ""
+
+#: ../controlpanel.py:43
+msgid "Password overriding the system settings"
+msgstr ""
+
+#: ../patches.py:43
+msgid "Permission denied to rename ${title}."
+msgstr ""
+
+#: ../content/file_owncloud.py:179
+#: ../controlpanel.py:67
+msgid "Save"
+msgstr ""
+
+#: ../controlpanel.py:85
+msgid "The community {} not has been created in owncloud due to {}"
+msgstr ""
+
+#: ../controlpanel.py:37
+msgid "Username for manage OwnCloud"
+msgstr ""
+
+#: ../controlpanel.py:21
+msgid "WebDAV: http://host:port/path/to/webdav,Local filesystem: file://path/to/directory, AWS S3: s3://bucketname, SFTP sftp://host/path, FTP: ftp://host/path"
+msgstr ""
+
+#: ../utilities.py:43
+msgid "admin user or admin password or server url is wrong configured in OwnCloud controlpanel."
+msgstr ""
+
+#: ../content/file_owncloud.py:33
+msgid "file_owncloud_description"
+msgstr ""
+
+#: ../content/file_owncloud.py:32
+msgid "file_owncloud_title"
+msgstr ""
+
+#: ../content/file_owncloud.py:40
+msgid "fileid_owncloud_description"
+msgstr ""
+
+#: ../content/file_owncloud.py:39
+msgid "fileid_owncloud_title"
+msgstr ""
+
+#: ../utilities.py:50
+msgid "your client session with OwnCloud server is not ready, please, do logout and login again."
+msgstr ""
+
+#: ../utilities.py:34
+msgid "your user or password does not exists in OwnCloud server. Or server url is wrong configured."
+msgstr ""

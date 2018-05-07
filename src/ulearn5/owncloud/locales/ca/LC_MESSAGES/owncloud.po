@@ -1,0 +1,106 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: DOMAIN\n"
+
+#: ../content/file_owncloud.py:193
+#: ../controlpanel.py:101
+msgid "Cancel"
+msgstr "Cancel·lar"
+
+#: ../controlpanel.py:97
+msgid "Changes saved"
+msgstr "Canvis guardats"
+
+#: ../controlpanel.py:20
+msgid "Connection URL of storage"
+msgstr "Adreça per connectar amb l'emmagatzemament"
+
+#: ../controlpanel.py:30
+msgid "Connector mode"
+msgstr "Mode de connexió"
+
+#: ../controlpanel.py:31
+msgid "Connector mode (defaults to 'owncloud')"
+msgstr "Mode de connexió (per defecte: owncloud)"
+
+#: ../controlpanel.py:48
+msgid "Domain manage communities in OwnCloud"
+msgstr "Nom del domini que es crearà a OwnCloud"
+
+#: ../content/file_owncloud.py:197
+#: ../controlpanel.py:103
+msgid "Edit cancelled"
+msgstr "Edició cancel·lada"
+
+#: ../patches.py:84
+msgid "Error renaming ${title}"
+msgstr "Ha succeït un error canviant el nom a ${title}"
+
+#: ../controlpanel.py:58
+msgid "OwnCloud Settings"
+msgstr "Configuració d'OwnCloud"
+
+#: ../controlpanel.py:43
+msgid "Password overriding the system settings"
+msgstr "Contrasenya per sobrescriure la configuració del sistema"
+
+#: ../patches.py:43
+msgid "Permission denied to rename ${title}."
+msgstr "Permissos denegats per renombrar ${title}."
+
+#: ../content/file_owncloud.py:179
+#: ../controlpanel.py:67
+msgid "Save"
+msgstr "Guardar"
+
+#: ../controlpanel.py:85
+msgid "The community {} not has been created in owncloud due to {}"
+msgstr "La comunitat {} no s'ha creat en OwnCloud degut a {}"
+
+#: ../controlpanel.py:37
+msgid "Username for manage OwnCloud"
+msgstr "Nom d'usuari per administrar OwnCloud"
+
+#: ../controlpanel.py:21
+msgid "WebDAV: http://host:port/path/to/webdav, Local filesystem: file://path/to/directory, AWS S3: s3://bucketname, SFTP sftp://host/path, FTP: ftp://host/path"
+msgstr ""
+
+#: ../utilities.py:43
+msgid "admin user or admin password or server url is wrong configured in OwnCloud controlpanel."
+msgstr "L'usuari d'admin, la seva contrasenya o l'adreça del servidor no s'han configurat correctament al panell de configuració d'OwnCloud."
+
+#: ../content/file_owncloud.py:33
+msgid "file_owncloud_description"
+msgstr "Descripció del fitxer OwnCloud"
+
+#: ../content/file_owncloud.py:32
+msgid "file_owncloud_title"
+msgstr "Títol del fitxer OwnCloud"
+
+#: ../content/file_owncloud.py:40
+msgid "fileid_owncloud_description"
+msgstr "Descripció del fileid"
+
+#: ../content/file_owncloud.py:39
+msgid "fileid_owncloud_title"
+msgstr "Fileid"
+
+#: ../utilities.py:50
+msgid "your client session with OwnCloud server is not ready, please, do logout and login again."
+msgstr "La vostra sessió de connexió amb OwnCloud no està operativa, si us plau, sortiu i torneu a entrar de nou a l'espai de Comunitats"
+
+#: ../utilities.py:34
+msgid "your user or password does not exists in OwnCloud server. Or server url is wrong configured."
+msgstr "El seu usuari no existeix o bé la seva contrasenya es incorrecta. També és possible que l'adreça del servidor no sigui correcta."
