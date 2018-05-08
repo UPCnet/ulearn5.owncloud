@@ -18,7 +18,7 @@
             <br/>
             <legend i18n:translate="title_create_new_file">Create a new empty file</legend>
             <div id="single-new-form" tal:define="CREATE_NEW_FILE_URL string:${context/absolute_url}/create-file">
-              <form tal:attributes="action CREATE_NEW_FILE_URL" id="new_file">
+              <form tal:attributes="action CREATE_NEW_FILE_URL" id="new_file" target="_blank">
                 <div>
                   <label aria-label="Create Document" aria-hidden="true">
                     <input type="radio" name="type" value="odt" checked>

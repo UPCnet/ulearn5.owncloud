@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import transaction
-import webbrowser
 from five import grok
 from zope import schema
 from zope.interface import implements
@@ -117,8 +116,7 @@ class CreateFileTextOwnCloud(grok.View):
 
         connector_url = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_url')
         url_file_owncloud = connector_url + 'index.php/apps/richdocuments/index?fileId=' + obj.fileid + '&dir=' + path
-        webbrowser.open_new_tab(url_file_owncloud)
-        # return self.request.response.redirect(url_file_owncloud)
+        return self.request.response.redirect(url_file_owncloud)
 
 
 class FileOwncloudView(grok.View):
