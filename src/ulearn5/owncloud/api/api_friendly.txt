@@ -38,19 +38,6 @@ class PublicShare(ShareInfo):
     def __str__(self):
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 class FileInfo(object):
 
     def __init__(self, path, file_type='file', attributes=None):

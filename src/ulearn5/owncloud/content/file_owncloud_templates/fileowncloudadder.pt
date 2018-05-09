@@ -44,10 +44,10 @@
                 </div>
                 <br/>
                 <label i18n:translate="Enter name for new file:">Enter name for new file:</label>
-                <input type="text" name="file" class="form-control" aria-label="Enter name for new file" required/>
+                <input id="textFile" type="text" name="file" class="form-control" aria-label="Enter name for new file" required/>
               </form>
               <br/>
-              <button class="btn submit-widget button-field context" type="submit" form="new_file" value="Afegir">Afegir</button>
+              <button id="addFile" class="btn submit-widget button-field context" type="submit" form="new_file" value="Afegir">Afegir</button>
               <a class="btn pull-right submit-widget button-field context" tal:attributes="href string:${context/absolute_url}/${request/subpath|nothing}" i18n:translate="back_to_directory">Tornar al directori</a>
             </div>
           </fieldset>
@@ -74,6 +74,21 @@
           </fieldset>
         </div>
         <script type="text/javascript">
+          var type = ""
+          $("#new_file input").on('change', function() {
+            type = $("input[name=type]:checked", "#new_file").val();
+          });
+          $("#addFile").click(function() {
+            var filename = $('#textFile').val();
+            if (filename != "") {
+              var url = $(location).attr('href');
+              var shortUrl = url.substring(0,url.lastIndexOf("++add++ulearn5.owncloud.file_owncloud#/"));
+              shortUrl = shortUrl + filename + "." + type
+              window.setTimeout(function() {
+                  window.location.href = shortUrl;
+              }, 500);
+            }
+          });
           Dropzone.autoDiscover = false;
           $(document).ready(function() {
               $("#dropzone").dropzone({
@@ -83,7 +98,6 @@
                   parallelUploads: 1
               });
           });
-
         </script>
       </metal:content-core>
     </metal:main>
