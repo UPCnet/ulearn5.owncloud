@@ -150,4 +150,3 @@ class Client(object):
     def _xml_to_dict(self, element):
     def _get_shareinfo(self, data_el):
     def _update_capabilities(self):
- 

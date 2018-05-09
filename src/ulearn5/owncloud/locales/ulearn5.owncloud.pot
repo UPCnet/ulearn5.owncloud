@@ -1,7 +1,10 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"POT-Creation-Date: 2018-05-09 09:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +15,11 @@ msgstr ""
 "Language-Code: en\n"
 "Language-Name: English\n"
 "Preferred-Encodings: utf-8 latin1\n"
-"Domain: DOMAIN\n"
+"Domain: ulearn5.owncloud\n"
+
+#: ../controlpanel.py:59
+msgid ""
+msgstr ""
 
 #: ../content/file_owncloud.py:193
 #: ../controlpanel.py:101
@@ -35,6 +42,10 @@ msgstr ""
 msgid "Connector mode (defaults to 'owncloud')"
 msgstr ""
 
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:27
+msgid "Document"
+msgstr ""
+
 #: ../controlpanel.py:48
 msgid "Domain manage communities in OwnCloud"
 msgstr ""
@@ -44,11 +55,24 @@ msgstr ""
 msgid "Edit cancelled"
 msgstr ""
 
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:46
+msgid "Enter name for new file:"
+msgstr ""
+
 #: ../patches.py:84
 msgid "Error renaming ${title}"
 msgstr ""
 
+#: ../profiles/default/types/ulearn5.owncloud.file_owncloud.xml
+msgid "File Owncloud"
+msgstr ""
+
+#: ../configure.zcml:24
+msgid "Installs the ulearn5.owncloud add-on."
+msgstr ""
+
 #: ../controlpanel.py:58
+#: ../profiles/default/controlpanel.xml
 msgid "OwnCloud Settings"
 msgstr ""
 
@@ -60,13 +84,25 @@ msgstr ""
 msgid "Permission denied to rename ${title}."
 msgstr ""
 
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:41
+msgid "Presentation"
+msgstr ""
+
 #: ../content/file_owncloud.py:179
 #: ../controlpanel.py:67
 msgid "Save"
 msgstr ""
 
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:34
+msgid "Spreadsheet"
+msgstr ""
+
 #: ../controlpanel.py:85
 msgid "The community {} not has been created in owncloud due to {}"
+msgstr ""
+
+#: ../configure.zcml:33
+msgid "Uninstalls the ulearn5.owncloud add-on."
 msgstr ""
 
 #: ../controlpanel.py:37
@@ -79,6 +115,21 @@ msgstr ""
 
 #: ../utilities.py:43
 msgid "admin user or admin password or server url is wrong configured in OwnCloud controlpanel."
+msgstr ""
+
+#. Default: "Tornar al directori"
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:51
+msgid "back_to_directory"
+msgstr ""
+
+#. Default: "Drop file here or click to upload"
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:60
+msgid "click_to_upload"
+msgstr ""
+
+#. Default: "Per realitzar accions sobre el fitxer/fitxers pujats torna al directori"
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:66
+msgid "delete_uploaded_files"
 msgstr ""
 
 #: ../content/file_owncloud.py:33
@@ -95,6 +146,34 @@ msgstr ""
 
 #: ../content/file_owncloud.py:39
 msgid "fileid_owncloud_title"
+msgstr ""
+
+#. Default: "Click in the image for choose beetwen document, spreadsheet or presentation"
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:17
+msgid "help_create_new_file"
+msgstr ""
+
+#. Default: "Use this form for uploading a single or multiple files to owncloud"
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:55
+msgid "help_uploading_files"
+msgstr ""
+
+#. Default: "Create a new empty file"
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:19
+msgid "title_create_new_file"
+msgstr ""
+
+#. Default: "Upload file/s from your computer"
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:57
+msgid "title_upload_new_file"
+msgstr ""
+
+#: ../configure.zcml:24
+msgid "ulearn5.owncloud"
+msgstr ""
+
+#: ../configure.zcml:33
+msgid "ulearn5.owncloud (uninstall)"
 msgstr ""
 
 #: ../utilities.py:50

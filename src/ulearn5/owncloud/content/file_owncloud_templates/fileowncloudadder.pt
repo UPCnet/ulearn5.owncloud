@@ -24,26 +24,26 @@
                     <input type="radio" name="type" value="odt" checked>
                     <div class="odt">
                       <i class="fa fa-file-text-o icons"></i>
-                      <span>Document</span>
+                      <span i18n:translate="Document">Document</span>
                     </div>
                   </label>
                   <label aria-label="Create Spreadsheet" aria-hidden="true">
                     <input type="radio" name="type" value="ods">
                     <div class="ods">
                       <i class="fa fa-file-excel-o icons"></i>
-                      <span>Spreadsheet</span>
+                      <span i18n:translate="Spreadsheet">Spreadsheet</span>
                     </div>
                   </label>
                   <label aria-label="Create Presentation" aria-hidden="true">
                     <input type="radio" name="type" value="odp">
                     <div class="odp">
                       <i class="fa fa-file-powerpoint-o icons"></i>
-                      <span>Presentation</span>
+                      <span i18n:translate="Presentation">Presentation</span>
                     </div>
                   </label>
                 </div>
                 <br/>
-                <label>Enter name for new file:</label>
+                <label i18n:translate="Enter name for new file:">Enter name for new file:</label>
                 <input type="text" name="file" class="form-control" aria-label="Enter name for new file" required/>
               </form>
               <br/>
@@ -83,6 +83,7 @@
                   parallelUploads: 1
               });
           });
+
         </script>
       </metal:content-core>
     </metal:main>

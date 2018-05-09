@@ -35,6 +35,10 @@ msgstr "Modo de conexión"
 msgid "Connector mode (defaults to 'owncloud')"
 msgstr "Mode de conexión (por defecto: owncloud)"
 
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:27
+msgid "Document"
+msgstr "Documento"
+
 #: ../controlpanel.py:48
 msgid "Domain manage communities in OwnCloud"
 msgstr "Nombre del dominio que se creará en OwnCloud"
@@ -44,11 +48,24 @@ msgstr "Nombre del dominio que se creará en OwnCloud"
 msgid "Edit cancelled"
 msgstr "Edición cancelada"
 
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:46
+msgid "Enter name for new file:"
+msgstr "Añade un nombre:"
+
 #: ../patches.py:84
 msgid "Error renaming ${title}"
 msgstr "Ha sucedido un error cambiando el nombre a ${title}"
 
+#: ../profiles/default/types/ulearn5.owncloud.file_owncloud.xml
+msgid "File Owncloud"
+msgstr "Cloud File"
+
+#: ../configure.zcml:24
+msgid "Installs the ulearn5.owncloud add-on."
+msgstr "Instala el plugin de ulearn5.owncloud"
+
 #: ../controlpanel.py:58
+#: ../profiles/default/controlpanel.xml
 msgid "OwnCloud Settings"
 msgstr "Configuración de OwnCloud"
 
@@ -60,26 +77,53 @@ msgstr "Contraseña para sobrescribir la configuración del sistema"
 msgid "Permission denied to rename ${title}."
 msgstr "Permisos denegados para renombrar ${title}."
 
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:41
+msgid "Presentation"
+msgstr "Presentación"
+
 #: ../content/file_owncloud.py:179
 #: ../controlpanel.py:67
 msgid "Save"
 msgstr "Guardar"
 
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:34
+msgid "Spreadsheet"
+msgstr "Hoja de cálculo"
+
 #: ../controlpanel.py:85
 msgid "The community {} not has been created in owncloud due to {}"
 msgstr "La comunidad {} no se ha creado en OwnCloud debido a {}"
+
+#: ../configure.zcml:33
+msgid "Uninstalls the ulearn5.owncloud add-on."
+msgstr "Desinstala el plugin de ulearn5.owncloud"
 
 #: ../controlpanel.py:37
 msgid "Username for manage OwnCloud"
 msgstr "Nombre de usuario para administrar OwnCloud"
 
 #: ../controlpanel.py:21
-msgid "WebDAV: http://host:port/path/to/webdav, Local filesystem: file://path/to/directory, AWS S3: s3://bucketname, SFTP sftp://host/path, FTP: ftp://host/path"
+msgid "WebDAV: http://host:port/path/to/webdav,Local filesystem: file://path/to/directory, AWS S3: s3://bucketname, SFTP sftp://host/path, FTP: ftp://host/path"
 msgstr ""
 
 #: ../utilities.py:43
 msgid "admin user or admin password or server url is wrong configured in OwnCloud controlpanel."
 msgstr "El usuario admin, su contraseña o la dirección del servidor no se han configurado correctamente en el panel de configuración de OwnCloud."
+
+#. Default: "Tornar al directori"
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:51
+msgid "back_to_directory"
+msgstr "Vuelve a la carpeta"
+
+#. Default: "Drop file here or click to upload"
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:60
+msgid "click_to_upload"
+msgstr "Arrastra ficheros aqui o haz clic para añadir desde tu ordenador"
+
+#. Default: "Per realitzar accions sobre el fitxer/fitxers pujats torna al directori"
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:66
+msgid "delete_uploaded_files"
+msgstr "Vuelve a la carpeta para realizar acciones sobre el fichero o ficheros subidos."
 
 #: ../content/file_owncloud.py:33
 msgid "file_owncloud_description"
@@ -96,6 +140,34 @@ msgstr "Descripción del fileid"
 #: ../content/file_owncloud.py:39
 msgid "fileid_owncloud_title"
 msgstr "Fileid"
+
+#. Default: "Click in the image for choose beetwen document, spreadsheet or presentation"
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:17
+msgid "help_create_new_file"
+msgstr "Clica en la imagen para escoger entre documento, hoja de cálculo o presentación"
+
+#. Default: "Use this form for uploading a single or multiple files to owncloud"
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:55
+msgid "help_uploading_files"
+msgstr "Utiliza este formulario para añadir uno o múltiples ficheros."
+
+#. Default: "Create a new empty file"
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:19
+msgid "title_create_new_file"
+msgstr "Fichero en blanco"
+
+#. Default: "Upload file/s from your computer"
+#: ../content/file_owncloud_templates/fileowncloudadder.pt:57
+msgid "title_upload_new_file"
+msgstr "Añade ficheros"
+
+#: ../configure.zcml:24
+msgid "ulearn5.owncloud"
+msgstr ""
+
+#: ../configure.zcml:33
+msgid "ulearn5.owncloud (uninstall)"
+msgstr ""
 
 #: ../utilities.py:50
 msgid "your client session with OwnCloud server is not ready, please, do logout and login again."
