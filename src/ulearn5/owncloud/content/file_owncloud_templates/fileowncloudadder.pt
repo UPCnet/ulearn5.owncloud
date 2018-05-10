@@ -18,7 +18,7 @@
             <br/>
             <legend i18n:translate="title_create_new_file">Create a new empty file</legend>
             <div id="single-new-form" tal:define="CREATE_NEW_FILE_URL string:${context/absolute_url}/create-file">
-              <form tal:attributes="action CREATE_NEW_FILE_URL" id="new_file" target="_blank">
+              <form tal:attributes="action CREATE_NEW_FILE_URL" id="new_file">
                 <div>
                   <label aria-label="Create Document" aria-hidden="true">
                     <input type="radio" name="type" value="odt" checked>
@@ -74,21 +74,6 @@
           </fieldset>
         </div>
         <script type="text/javascript">
-          var type = ""
-          $("#new_file input").on('change', function() {
-            type = $("input[name=type]:checked", "#new_file").val();
-          });
-          $("#addFile").click(function() {
-            var filename = $('#textFile').val();
-            if (filename != "") {
-              var url = $(location).attr('href');
-              var shortUrl = url.substring(0,url.lastIndexOf("++add++ulearn5.owncloud.file_owncloud#/"));
-              shortUrl = shortUrl + filename + "." + type
-              window.setTimeout(function() {
-                  window.location.href = shortUrl;
-              }, 500);
-            }
-          });
           Dropzone.autoDiscover = false;
           $(document).ready(function() {
               $("#dropzone").dropzone({

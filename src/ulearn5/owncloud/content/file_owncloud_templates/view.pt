@@ -12,7 +12,7 @@
     <metal:block define-macro="content-core">
 
       <a id="file_owncloud" href="#" target="_blank"
-         tal:attributes="href view/getURLFileOwncloud;
+         tal:attributes="onclick view/getURLFileOwncloud;
                          title view/getTitle">
           <tal:file content="view/getTitle">
             File
