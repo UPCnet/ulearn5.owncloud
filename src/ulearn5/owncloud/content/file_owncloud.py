@@ -113,7 +113,7 @@ class CreateFileTextOwnCloud(grok.View):
         obj.fileid = create_file_in_owncloud(filename, path, content)
 
         transaction.commit()
-        url = self.context.absolute_url() + '.' + filename
+        url = self.context.absolute_url() + '/' + filename
 
         #connector_url = api.portal.get_registry_record('ulearn5.owncloud.controlpanel.IOCSettings.connector_url')
         #url_file_owncloud = connector_url + 'index.php/apps/richdocuments/index?fileId=' + obj.fileid + '&dir=' + path
