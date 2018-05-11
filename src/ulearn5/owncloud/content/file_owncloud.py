@@ -11,7 +11,6 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.interfaces import IFolderish
 from Products.statusmessages.interfaces import IStatusMessage
 
-from plone import api
 from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.dexterity.browser.add import DefaultAddForm, DefaultAddView
 from plone.dexterity.browser.edit import DefaultEditForm
