@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 class createCommunitiesInOwncloudIfNotExists(grok.View):
-    """ Aquesta vista canvia la url de les comunitats """
+    """ Aquesta vista replica l'estructura de carpetes i assigna permisos de les comunitats en owncloud """
     grok.name('migrate2owncloud')
     grok.context(IPloneSiteRoot)
     grok.require('cmf.ManagePortal')

@@ -37,16 +37,10 @@ def construct_url_for_owncloud(context):
     return url_file_owncloud
 
 def update_owncloud_permission(obj, acl):
-    # Modify permissions owncloud
     domain = get_domain()
-    #import ipdb; ipdb.set_trace()
     portal = api.portal.get()
     ppath = obj.getPhysicalPath()
     relative = ppath[len(portal.getPhysicalPath()):]
-    #portal_state = self.context.unrestrictedTraverse('@@plone_portal_state')
-    #root = getNavigationRootObject(self.context, portal_state.portal())
-    #ppath = self.target.getPhysicalPath()
-    #relative = ppath[len(root.getPhysicalPath()):]
     path = "/".join(relative)
 
     permissions = []
@@ -67,7 +61,10 @@ def update_owncloud_permission(obj, acl):
 
     # Search the users that we have to remove and delete our owncloud permissions
     users_editacl = [user['id'] for user in acl['users']]
-    groups_editacl = [group['id'] for group in acl['groups']]
+    if 'groups' in acl:
+        groups_editacl = [group['id'] for group in acl['groups']]
+    else:
+        groups_editacl = []
     users_delete = set(users_permissions) - set(users_editacl) - set(groups_editacl)
 
     for user in users_delete:
@@ -106,31 +103,32 @@ def update_owncloud_permission(obj, acl):
 
 
     # Add or modify the permissions of the groups
-    for group in acl['groups']:
-        update_share = False
-        if 'owner' in group['role']:
-            for share in share_info:
-                if group['id'] in share.get_share_with():
-                    session.update_share(share.get_id(), perms=Client.OCS_PERMISSION_ALL)
-                    update_share = True
-                    break
-            if not update_share:
-                session.share_file_with_group(domain.lower() + '/' + path, group['id'], perms=Client.OCS_PERMISSION_ALL) #Propietari
-        elif 'writer' in group['role']:
-            for share in share_info:
-                if group['id'] in share.get_share_with():
-                    session.update_share(share.get_id(), perms=Client.OCS_PERMISSION_EDIT)
-                    update_share = True
-                    break
-            if not update_share:
-                session.share_file_with_group(domain.lower() + '/' + path, group['id'], perms=Client.OCS_PERMISSION_EDIT) #Editor
-        elif 'reader' in group['role']:
-            for share in share_info:
-                if group['id'] in share.get_share_with():
-                    session.update_share(share.get_id(), perms=Client.OCS_PERMISSION_READ)
-                    update_share = True
-                    break
-            if not update_share:
-                session.share_file_with_group(domain.lower() + '/' + path, group['id']) #Lector
-        else:
-            pass
+    if 'groups' in acl:
+        for group in acl['groups']:
+            update_share = False
+            if 'owner' in group['role']:
+                for share in share_info:
+                    if group['id'] in share.get_share_with():
+                        session.update_share(share.get_id(), perms=Client.OCS_PERMISSION_ALL)
+                        update_share = True
+                        break
+                if not update_share:
+                    session.share_file_with_group(domain.lower() + '/' + path, group['id'], perms=Client.OCS_PERMISSION_ALL) #Propietari
+            elif 'writer' in group['role']:
+                for share in share_info:
+                    if group['id'] in share.get_share_with():
+                        session.update_share(share.get_id(), perms=Client.OCS_PERMISSION_EDIT)
+                        update_share = True
+                        break
+                if not update_share:
+                    session.share_file_with_group(domain.lower() + '/' + path, group['id'], perms=Client.OCS_PERMISSION_EDIT) #Editor
+            elif 'reader' in group['role']:
+                for share in share_info:
+                    if group['id'] in share.get_share_with():
+                        session.update_share(share.get_id(), perms=Client.OCS_PERMISSION_READ)
+                        update_share = True
+                        break
+                if not update_share:
+                    session.share_file_with_group(domain.lower() + '/' + path, group['id']) #Lector
+            else:
+                pass
