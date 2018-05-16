@@ -49,6 +49,7 @@ class FileOwncloud(Item):
 class UploadFileOwnCloud(grok.View):
     """Helper class for update Files in OwnCloud."""
 
+    grok.require('zope2.View')
     grok.context(IFolderish)
     grok.name('upload-file')
 
@@ -79,6 +80,7 @@ class UploadFileOwnCloud(grok.View):
 class CreateFileTextOwnCloud(grok.View):
     """Helper class for create new empty Files in OwnCloud."""
 
+    grok.require('zope2.View')
     grok.context(IFolderish)
     grok.name('create-file')
 
@@ -122,6 +124,7 @@ class CreateFileTextOwnCloud(grok.View):
 class FileOwncloudView(grok.View):
     """View class for FileOwnCloud contenttype."""
 
+    grok.require('zope2.View')
     grok.context(IFileOwncloud)
     grok.name('view')
 
