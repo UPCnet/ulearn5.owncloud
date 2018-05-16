@@ -11,7 +11,6 @@
 
   <grok:grok package="." />
   <include file="permissions.zcml" />
-  <include file="upgrades.zcml" />
   <include file="patches.zcml" />
 
   <genericsetup:registerProfile
