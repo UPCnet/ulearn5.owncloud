@@ -14,39 +14,39 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
 
-#: ../content/file_owncloud.py:193
+#: ../content/file_owncloud.py:195
 #: ../controlpanel.py:101
 msgid "Cancel"
-msgstr ""
+msgstr "Cancel"
 
 #: ../controlpanel.py:97
 msgid "Changes saved"
-msgstr ""
+msgstr "Changes saved"
 
 #: ../controlpanel.py:20
 msgid "Connection URL of storage"
-msgstr ""
+msgstr "Connection URL of storage"
 
 #: ../controlpanel.py:30
 msgid "Connector mode"
-msgstr ""
+msgstr "Connector mode"
 
 #: ../controlpanel.py:31
 msgid "Connector mode (defaults to 'owncloud')"
-msgstr ""
+msgstr "Connector mode (defaults to 'owncloud')"
 
 #: ../content/file_owncloud_templates/fileowncloudadder.pt:27
 msgid "Document"
-msgstr ""
+msgstr "Document"
 
 #: ../controlpanel.py:48
 msgid "Domain manage communities in OwnCloud"
-msgstr ""
+msgstr "Domain manage communities in OwnCloud"
 
-#: ../content/file_owncloud.py:197
+#: ../content/file_owncloud.py:199
 #: ../controlpanel.py:103
 msgid "Edit cancelled"
-msgstr ""
+msgstr "Edit cancelled"
 
 #: ../content/file_owncloud_templates/fileowncloudadder.pt:46
 msgid "Enter name for new file:"
@@ -54,61 +54,61 @@ msgstr "Add name:"
 
 #: ../patches.py:84
 msgid "Error renaming ${title}"
-msgstr ""
+msgstr "Error renaming ${title}"
 
 #: ../profiles/default/types/ulearn5.owncloud.file_owncloud.xml
 msgid "File Owncloud"
-msgstr ""
+msgstr "File Owncloud"
 
-#: ../configure.zcml:24
+#: ../configure.zcml:23
 msgid "Installs the ulearn5.owncloud add-on."
-msgstr ""
+msgstr "Installs the ulearn5.owncloud add-on."
 
 #: ../controlpanel.py:58
 #: ../profiles/default/controlpanel.xml
 msgid "OwnCloud Settings"
-msgstr ""
+msgstr "OwnCloud Settings"
 
 #: ../controlpanel.py:43
 msgid "Password overriding the system settings"
-msgstr ""
+msgstr "Password overriding the system settings"
 
 #: ../patches.py:43
 msgid "Permission denied to rename ${title}."
-msgstr ""
+msgstr "Permission denied to rename ${title}."
 
 #: ../content/file_owncloud_templates/fileowncloudadder.pt:41
 msgid "Presentation"
-msgstr ""
+msgstr "Presentation"
 
-#: ../content/file_owncloud.py:179
+#: ../content/file_owncloud.py:181
 #: ../controlpanel.py:67
 msgid "Save"
-msgstr ""
+msgstr "Save"
 
 #: ../content/file_owncloud_templates/fileowncloudadder.pt:34
 msgid "Spreadsheet"
-msgstr ""
+msgstr "Spreadsheet"
 
 #: ../controlpanel.py:85
 msgid "The community {} not has been created in owncloud due to {}"
-msgstr ""
+msgstr "The community {} not has been created in owncloud due to {}"
 
-#: ../configure.zcml:33
+#: ../configure.zcml:32
 msgid "Uninstalls the ulearn5.owncloud add-on."
-msgstr ""
+msgstr "Uninstalls the ulearn5.owncloud add-on."
 
 #: ../controlpanel.py:37
 msgid "Username for manage OwnCloud"
-msgstr ""
+msgstr "Username for manage OwnCloud"
 
 #: ../controlpanel.py:21
 msgid "WebDAV: http://host:port/path/to/webdav,Local filesystem: file://path/to/directory, AWS S3: s3://bucketname, SFTP sftp://host/path, FTP: ftp://host/path"
-msgstr ""
+msgstr "WebDAV: http://host:port/path/to/webdav,Local filesystem: file://path/to/directory, AWS S3: s3://bucketname, SFTP sftp://host/path, FTP: ftp://host/path"
 
 #: ../utilities.py:43
 msgid "admin user or admin password or server url is wrong configured in OwnCloud controlpanel."
-msgstr ""
+msgstr "admin user or admin password or server url is wrong configured in OwnCloud controlpanel."
 
 #. Default: "Tornar al directori"
 #: ../content/file_owncloud_templates/fileowncloudadder.pt:51
@@ -118,33 +118,33 @@ msgstr "Back to folder"
 #. Default: "Drop file here or click to upload"
 #: ../content/file_owncloud_templates/fileowncloudadder.pt:60
 msgid "click_to_upload"
-msgstr ""
+msgstr "Drop file here or click to upload"
 
 #. Default: "Per realitzar accions sobre el fitxer/fitxers pujats torna al directori"
 #: ../content/file_owncloud_templates/fileowncloudadder.pt:66
 msgid "delete_uploaded_files"
 msgstr "Go back to the folder to perform actions over the uploaded files"
 
-#: ../content/file_owncloud.py:33
+#: ../content/file_owncloud.py:31
 msgid "file_owncloud_description"
-msgstr ""
+msgstr "Description of the OwnCloud file"
 
-#: ../content/file_owncloud.py:32
+#: ../content/file_owncloud.py:30
 msgid "file_owncloud_title"
-msgstr ""
+msgstr "OwnCloud file title"
 
-#: ../content/file_owncloud.py:40
+#: ../content/file_owncloud.py:38
 msgid "fileid_owncloud_description"
-msgstr ""
+msgstr "Description of the Fileid"
 
-#: ../content/file_owncloud.py:39
+#: ../content/file_owncloud.py:37
 msgid "fileid_owncloud_title"
-msgstr ""
+msgstr "Fileid"
 
 #. Default: "Click in the image for choose beetwen document, spreadsheet or presentation"
 #: ../content/file_owncloud_templates/fileowncloudadder.pt:17
 msgid "help_create_new_file"
-msgstr ""
+msgstr "Click in the image for choose beetwen document, spreadsheet or presentation"
 
 #. Default: "Use this form for uploading a single or multiple files to owncloud"
 #: ../content/file_owncloud_templates/fileowncloudadder.pt:55
@@ -161,18 +161,18 @@ msgstr "Empty File"
 msgid "title_upload_new_file"
 msgstr "Upload files"
 
-#: ../configure.zcml:24
+#: ../configure.zcml:23
 msgid "ulearn5.owncloud"
-msgstr ""
+msgstr "ulearn5.owncloud"
 
-#: ../configure.zcml:33
+#: ../configure.zcml:32
 msgid "ulearn5.owncloud (uninstall)"
-msgstr ""
+msgstr "ulearn5.owncloud (uninstall)"
 
 #: ../utilities.py:50
 msgid "your client session with OwnCloud server is not ready, please, do logout and login again."
-msgstr ""
+msgstr "your client session with OwnCloud server is not ready, please, do logout and login again."
 
 #: ../utilities.py:34
 msgid "your user or password does not exists in OwnCloud server. Or server url is wrong configured."
-msgstr ""
+msgstr "your user or password does not exists in OwnCloud server. Or server url is wrong configured."

@@ -14,7 +14,7 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
 
-#: ../content/file_owncloud.py:193
+#: ../content/file_owncloud.py:195
 #: ../controlpanel.py:101
 msgid "Cancel"
 msgstr "Cancel·lar"
@@ -37,13 +37,13 @@ msgstr "Mode de connexió (per defecte: owncloud)"
 
 #: ../content/file_owncloud_templates/fileowncloudadder.pt:27
 msgid "Document"
-msgstr ""
+msgstr "Document"
 
 #: ../controlpanel.py:48
 msgid "Domain manage communities in OwnCloud"
 msgstr "Nom del domini que es crearà a OwnCloud"
 
-#: ../content/file_owncloud.py:197
+#: ../content/file_owncloud.py:199
 #: ../controlpanel.py:103
 msgid "Edit cancelled"
 msgstr "Edició cancel·lada"
@@ -60,7 +60,7 @@ msgstr "Ha succeït un error canviant el nom a ${title}"
 msgid "File Owncloud"
 msgstr "Cloud File"
 
-#: ../configure.zcml:24
+#: ../configure.zcml:23
 msgid "Installs the ulearn5.owncloud add-on."
 msgstr "Instal·la el plugin per ulearn5.owncloud"
 
@@ -81,7 +81,7 @@ msgstr "Permissos denegats per renombrar ${title}."
 msgid "Presentation"
 msgstr "Presentació"
 
-#: ../content/file_owncloud.py:179
+#: ../content/file_owncloud.py:181
 #: ../controlpanel.py:67
 msgid "Save"
 msgstr "Guardar"
@@ -94,7 +94,7 @@ msgstr "Full de càlcul"
 msgid "The community {} not has been created in owncloud due to {}"
 msgstr "La comunitat {} no s'ha creat en OwnCloud degut a {}"
 
-#: ../configure.zcml:33
+#: ../configure.zcml:32
 msgid "Uninstalls the ulearn5.owncloud add-on."
 msgstr "Desinstal·la el plugin d'ulearn5.owncloud."
 
@@ -104,7 +104,7 @@ msgstr "Nom d'usuari per administrar OwnCloud"
 
 #: ../controlpanel.py:21
 msgid "WebDAV: http://host:port/path/to/webdav,Local filesystem: file://path/to/directory, AWS S3: s3://bucketname, SFTP sftp://host/path, FTP: ftp://host/path"
-msgstr ""
+msgstr "WebDAV: http://host:port/path/to/webdav,Local filesystem: file://path/to/directory, AWS S3: s3://bucketname, SFTP sftp://host/path, FTP: ftp://host/path"
 
 #: ../utilities.py:43
 msgid "admin user or admin password or server url is wrong configured in OwnCloud controlpanel."
@@ -125,19 +125,19 @@ msgstr "Arrosega fitxers aquí o fes clic per afegir des del teu ordinador"
 msgid "delete_uploaded_files"
 msgstr "Torna a la carpeta per realitzar accions sobre el fitxer o fitxers pujats"
 
-#: ../content/file_owncloud.py:33
+#: ../content/file_owncloud.py:31
 msgid "file_owncloud_description"
 msgstr "Descripció del fitxer OwnCloud"
 
-#: ../content/file_owncloud.py:32
+#: ../content/file_owncloud.py:30
 msgid "file_owncloud_title"
 msgstr "Títol del fitxer OwnCloud"
 
-#: ../content/file_owncloud.py:40
+#: ../content/file_owncloud.py:38
 msgid "fileid_owncloud_description"
 msgstr "Descripció del fileid"
 
-#: ../content/file_owncloud.py:39
+#: ../content/file_owncloud.py:37
 msgid "fileid_owncloud_title"
 msgstr "Fileid"
 
@@ -161,13 +161,13 @@ msgstr "Fitxer en blanc"
 msgid "title_upload_new_file"
 msgstr "Penja fitxers"
 
-#: ../configure.zcml:24
+#: ../configure.zcml:23
 msgid "ulearn5.owncloud"
-msgstr ""
+msgstr "ulearn5.owncloud"
 
-#: ../configure.zcml:33
+#: ../configure.zcml:32
 msgid "ulearn5.owncloud (uninstall)"
-msgstr ""
+msgstr "ulearn5.owncloud (desinstal·lar)"
 
 #: ../utilities.py:50
 msgid "your client session with OwnCloud server is not ready, please, do logout and login again."

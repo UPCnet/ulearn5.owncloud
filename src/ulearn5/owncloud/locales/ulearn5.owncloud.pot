@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2018-05-09 09:42+0000\n"
+"POT-Creation-Date: 2018-06-25 07:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid ""
 msgstr ""
 
-#: ../content/file_owncloud.py:193
+#: ../content/file_owncloud.py:195
 #: ../controlpanel.py:101
 msgid "Cancel"
 msgstr ""
@@ -50,7 +50,7 @@ msgstr ""
 msgid "Domain manage communities in OwnCloud"
 msgstr ""
 
-#: ../content/file_owncloud.py:197
+#: ../content/file_owncloud.py:199
 #: ../controlpanel.py:103
 msgid "Edit cancelled"
 msgstr ""
@@ -67,7 +67,7 @@ msgstr ""
 msgid "File Owncloud"
 msgstr ""
 
-#: ../configure.zcml:24
+#: ../configure.zcml:23
 msgid "Installs the ulearn5.owncloud add-on."
 msgstr ""
 
@@ -88,7 +88,7 @@ msgstr ""
 msgid "Presentation"
 msgstr ""
 
-#: ../content/file_owncloud.py:179
+#: ../content/file_owncloud.py:181
 #: ../controlpanel.py:67
 msgid "Save"
 msgstr ""
@@ -101,7 +101,7 @@ msgstr ""
 msgid "The community {} not has been created in owncloud due to {}"
 msgstr ""
 
-#: ../configure.zcml:33
+#: ../configure.zcml:32
 msgid "Uninstalls the ulearn5.owncloud add-on."
 msgstr ""
 
@@ -132,19 +132,19 @@ msgstr ""
 msgid "delete_uploaded_files"
 msgstr ""
 
-#: ../content/file_owncloud.py:33
+#: ../content/file_owncloud.py:31
 msgid "file_owncloud_description"
 msgstr ""
 
-#: ../content/file_owncloud.py:32
+#: ../content/file_owncloud.py:30
 msgid "file_owncloud_title"
 msgstr ""
 
-#: ../content/file_owncloud.py:40
+#: ../content/file_owncloud.py:38
 msgid "fileid_owncloud_description"
 msgstr ""
 
-#: ../content/file_owncloud.py:39
+#: ../content/file_owncloud.py:37
 msgid "fileid_owncloud_title"
 msgstr ""
 
@@ -168,11 +168,11 @@ msgstr ""
 msgid "title_upload_new_file"
 msgstr ""
 
-#: ../configure.zcml:24
+#: ../configure.zcml:23
 msgid "ulearn5.owncloud"
 msgstr ""
 
-#: ../configure.zcml:33
+#: ../configure.zcml:32
 msgid "ulearn5.owncloud (uninstall)"
 msgstr ""
 
