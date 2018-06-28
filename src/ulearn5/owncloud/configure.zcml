@@ -58,7 +58,7 @@
            plone.dexterity.interfaces.IDexterityFTI"
       provides="zope.publisher.interfaces.browser.IBrowserPage"
       factory="ulearn5.owncloud.content.file_owncloud.AddView"
-      name="ulearn5.owncloud.file_owncloud"/>
+      name="CloudFile"/>
 
 
   <browser:page

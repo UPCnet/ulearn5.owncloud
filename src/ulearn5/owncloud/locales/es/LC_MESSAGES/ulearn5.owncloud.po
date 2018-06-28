@@ -56,7 +56,7 @@ msgstr "Añade un nombre:"
 msgid "Error renaming ${title}"
 msgstr "Ha sucedido un error cambiando el nombre a ${title}"
 
-#: ../profiles/default/types/ulearn5.owncloud.file_owncloud.xml
+#: ../profiles/default/types/CloudFile.xml
 msgid "File Owncloud"
 msgstr "Cloud File"
 

@@ -176,7 +176,7 @@ def fileCopied(content, event):
 
             origin_path = ""
             pc = api.portal.get_tool(name='portal_catalog')
-            results = pc.searchResults(portal_type='ulearn5.owncloud.file_owncloud', fileid=content.fileid)
+            results = pc.searchResults(portal_type='CloudFile', fileid=content.fileid)
             for r in results:
                 path = tuple(r.getPath().split('/'))
                 if new != path:
