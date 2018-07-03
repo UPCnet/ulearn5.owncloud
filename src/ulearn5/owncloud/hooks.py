@@ -124,10 +124,8 @@ def folderMoved(content, event):
                     if err.status_code == 404:
                         logger.warning('The object {} has not been moved in owncloud'.format(origin_path))
             else:
-                logger.warning('There is not necessary Move folder because ICommunity is not provided')
-        else:
-            # ADD, REMOVE OR OTHER CASE
-            pass
+            	# ADD, REMOVE OR OTHER CASE
+            	pass
 
 
 @grok.subscribe(IFileOwncloud, IObjectMovedEvent)
