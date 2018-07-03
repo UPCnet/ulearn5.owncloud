@@ -14,7 +14,7 @@ long_description = '\n\n'.join([
 
 setup(
     name='ulearn5.owncloud',
-    version='0.2.dev0',
+    version='0.2',
     description="Connector for Owncloud in Plone site",
     long_description=long_description,
     # Get more from https://pypi.python.org/pypi?%3Aaction=list_classifiers

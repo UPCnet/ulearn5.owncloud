@@ -2,11 +2,12 @@ Changelog
 =========
 
 
-0.2 (unreleased)
+0.2 (2018-07-03)
 ----------------
 
-- Nothing changed yet.
-
+* Modify portal_type ulearn5.owncloud.file_owncloud by CloudFile [Pilar Marinas]
+* Traducciones [iago.lopez]
+* Revise hooks to make more restrictive [alberto.duran]
 
 0.1 (2018-05-22)
 ----------------
