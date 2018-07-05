@@ -60,7 +60,10 @@ def folderAdded(content, event):
 @grok.subscribe(IFolder, IObjectRemovedEvent)
 def folderRemoved(content, event):
     """Folder is removed in OwnCloud."""
-    if IPloneSiteRoot.providedBy(event.object):
+    if IPloneSiteRoot.providedBy(event.object) or \
+       ICommunity.providedBy(event.object) or \
+       (IPloneSiteRoot.providedBy(content.aq_parent) and \
+            not ICommunity.providedBy(event.object)):
         pass
     else:
         portal = api.portal.get()
@@ -205,29 +208,6 @@ def fileCopied(content, event):
 @grok.subscribe(IFileOwncloud, IObjectRemovedEvent)
 def fileRemoved(content, event):
     """File is removed in OwnCloud."""
-    portal = api.portal.get()
-    if is_activate_owncloud(portal):
-        portal_state = content.unrestrictedTraverse('@@plone_portal_state')
-        root = getNavigationRootObject(content, portal_state.portal())
-        ppath = content.getPhysicalPath()
-        relative = ppath[len(root.getPhysicalPath()):]
-        path = "/".join(relative)
-        client = getUtility(IOwncloudClient)
-        session = client.admin_connection()
-        try:
-            domain = get_domain()
-            session.file_info(domain + '/' + path)
-            session.delete(domain + '/' + path)
-        except OCSResponseError:
-            pass
-        except HTTPResponseError as err:
-            if err.status_code == 404:
-                logger.warning('The object {} has not been removed in owncloud'.format(path))
-
-
-@grok.subscribe(ICommunity, IObjectRemovedEvent)
-def communityRemoved(content, event):
-    """Community is removed in OwnCloud."""
     portal = api.portal.get()
     if is_activate_owncloud(portal):
         portal_state = content.unrestrictedTraverse('@@plone_portal_state')
