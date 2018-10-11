@@ -2,11 +2,11 @@ Changelog
 =========
 
 
-0.4 (unreleased)
+0.4 (2018-10-11)
 ----------------
 
-- Nothing changed yet.
-
+* Save changes owncloud/collabora from drive [alberto.duran]
+* Create OwncloudPartChanges.rst [Alberto Duran]
 
 0.3 (2018-07-05)
 ----------------
