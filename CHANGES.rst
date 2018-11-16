@@ -2,11 +2,10 @@ Changelog
 =========
 
 
-0.5 (unreleased)
+0.5 (2018-11-16)
 ----------------
 
-- Nothing changed yet.
-
+* Owncloud: Solucionar error al renombrar directorio [Iago López Fernández]
 
 0.4 (2018-10-11)
 ----------------
