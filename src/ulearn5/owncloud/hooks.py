@@ -99,7 +99,7 @@ def folderRemoved(content, event):
 
 @grok.subscribe(IFolder, IObjectMovedEvent)
 def folderMoved(content, event):
-    """File is moved or copied in OwnCloud."""
+    """Folder is moved or renamed in OwnCloud."""
     if IPloneSiteRoot.providedBy(event.object):
         pass
     else:
@@ -113,7 +113,7 @@ def folderMoved(content, event):
                 domain = get_domain()
                 # COPY / MOVE CASE
                 old = oldParent.getPhysicalPath()
-                origin_path = domain + "/" + "/".join(old[len(root.getPhysicalPath()):]) + "/" + content.id
+                origin_path = domain + "/" + "/".join(old[len(root.getPhysicalPath()):]) + "/" + event.oldName
                 new = newParent.getPhysicalPath()
                 target_path = domain + "/" + "/".join(new[len(root.getPhysicalPath()):]) + "/" + content.id
                 client = getUtility(IOwncloudClient)
@@ -127,13 +127,13 @@ def folderMoved(content, event):
                     if err.status_code == 404:
                         logger.warning('The object {} has not been moved in owncloud'.format(origin_path))
             else:
-            	# ADD, REMOVE OR OTHER CASE
-            	pass
+                # ADD, REMOVE OR OTHER CASE
+                pass
 
 
 @grok.subscribe(IFileOwncloud, IObjectMovedEvent)
 def fileMoved(content, event):
-    """File is moved in OwnCloud."""
+    """File is moved or renamed in OwnCloud."""
     portal = api.portal.get()
     if is_activate_owncloud(portal):
         portal_state = content.unrestrictedTraverse('@@plone_portal_state')
@@ -147,7 +147,6 @@ def fileMoved(content, event):
             origin_path = domain + "/" + "/".join(old[len(root.getPhysicalPath()):]) + "/" + content.id
             new = newParent.getPhysicalPath()
             target_path = domain + "/" + "/".join(new[len(root.getPhysicalPath()):]) + "/" + content.id
-
             client = getUtility(IOwncloudClient)
             session = client.admin_connection()
             try:
