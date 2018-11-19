@@ -103,32 +103,33 @@ def folderMoved(content, event):
     if IPloneSiteRoot.providedBy(event.object):
         pass
     else:
-        portal = api.portal.get()
-        if is_activate_owncloud(portal):
-            portal_state = content.unrestrictedTraverse('@@plone_portal_state')
-            root = getNavigationRootObject(content, portal_state.portal())
-            oldParent = event.oldParent
-            newParent = event.newParent
-            if newParent is not None and oldParent is not None:
-                domain = get_domain()
-                # COPY / MOVE CASE
-                old = oldParent.getPhysicalPath()
-                origin_path = domain + "/" + "/".join(old[len(root.getPhysicalPath()):]) + "/" + event.oldName
-                new = newParent.getPhysicalPath()
-                target_path = domain + "/" + "/".join(new[len(root.getPhysicalPath()):]) + "/" + content.id
-                client = getUtility(IOwncloudClient)
-                session = client.admin_connection()
-                try:
-                    session.file_info(origin_path)
-                    session.move(origin_path, target_path)
-                except OCSResponseError:
+        if content.id == event.newName:
+            portal = api.portal.get()
+            if is_activate_owncloud(portal):
+                portal_state = content.unrestrictedTraverse('@@plone_portal_state')
+                root = getNavigationRootObject(content, portal_state.portal())
+                oldParent = event.oldParent
+                newParent = event.newParent
+                if newParent is not None and oldParent is not None:
+                    domain = get_domain()
+                    # COPY / MOVE CASE
+                    old = oldParent.getPhysicalPath()
+                    origin_path = domain + "/" + "/".join(old[len(root.getPhysicalPath()):]) + "/" + event.oldName
+                    new = newParent.getPhysicalPath()
+                    target_path = domain + "/" + "/".join(new[len(root.getPhysicalPath()):]) + "/" + content.id
+                    client = getUtility(IOwncloudClient)
+                    session = client.admin_connection()
+                    try:
+                        session.file_info(origin_path)
+                        session.move(origin_path, target_path)
+                    except OCSResponseError:
+                        pass
+                    except HTTPResponseError as err:
+                        if err.status_code == 404:
+                            logger.warning('The object {} has not been moved in owncloud'.format(origin_path))
+                else:
+                    # ADD, REMOVE OR OTHER CASE
                     pass
-                except HTTPResponseError as err:
-                    if err.status_code == 404:
-                        logger.warning('The object {} has not been moved in owncloud'.format(origin_path))
-            else:
-                # ADD, REMOVE OR OTHER CASE
-                pass
 
 
 @grok.subscribe(IFileOwncloud, IObjectMovedEvent)
