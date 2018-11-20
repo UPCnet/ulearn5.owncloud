@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
+from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from five import grok
 from plone import api
 from plone.app.contenttypes.interfaces import IFolder
 from plone.app.layout.navigation.root import getNavigationRootObject
-from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
+from zope.component import getUtility
+from zope.container.interfaces import IObjectAddedEvent
+from zope.container.interfaces import IObjectRemovedEvent
+from zope.lifecycleevent import IObjectMovedEvent
+
 from ulearn5.core.content.community import ICommunity
 from ulearn5.core.utils import is_activate_owncloud
 from ulearn5.owncloud.api.owncloud import HTTPResponseError
@@ -11,15 +16,87 @@ from ulearn5.owncloud.api.owncloud import OCSResponseError
 from ulearn5.owncloud.content.file_owncloud import IFileOwncloud
 from ulearn5.owncloud.utilities import IOwncloudClient
 from ulearn5.owncloud.utils import get_domain
-from zope.component import getUtility
-from zope.container.interfaces import IObjectAddedEvent
-from zope.container.interfaces import IObjectRemovedEvent
-from zope.lifecycleevent import IObjectMovedEvent
 
 import logging
 
-
 logger = logging.getLogger(__name__)
+
+
+def createFolder(content):
+    portal_state = content.unrestrictedTraverse('@@plone_portal_state')
+    root = getNavigationRootObject(content, portal_state.portal())
+    ppath = content.getPhysicalPath()
+    relative = ppath[len(root.getPhysicalPath()):]
+    path = "/".join(relative)
+    is_in_community = False
+    for p in range(len(relative)):
+        now = relative[:p + 1]
+        obj = root.unrestrictedTraverse(now)
+        if ICommunity.providedBy(obj):
+            # Creem carpeta a OwnCloud
+            is_in_community = True
+            client = getUtility(IOwncloudClient)
+            session = client.admin_connection()
+            try:
+                domain = get_domain()
+                session.mkdir(domain + '/' + path)
+                copyContentInFolder(content)
+            except OCSResponseError:
+                pass
+            except HTTPResponseError as err:
+                if err.status_code == 404:
+                    logger.warning('The object {} has not been added in owncloud'.format(path))
+            break
+    if not is_in_community:
+        logger.warning('There is not necessary Add folder in OwnCloud because ICommunity is not provided')
+
+
+def copyFile(content):
+    root = api.portal.get()
+    if content.fileid is not None:
+        domain = get_domain()
+        # COPY CASE
+        new = content.getPhysicalPath()
+        target_path = domain + "/" + "/".join(new[len(root.getPhysicalPath()):])
+
+        origin_path = ""
+        pc = api.portal.get_tool(name='portal_catalog')
+        results = pc.searchResults(portal_type='CloudFile', fileid=content.fileid)
+        for r in results:
+            path = tuple(r.getPath().split('/'))
+            if new != path:
+                # Hemos encontrado el objeto de origen
+                origin_path = domain + "/" + "/".join(path[len(root.getPhysicalPath()):])
+
+        client = getUtility(IOwncloudClient)
+        session = client.admin_connection()
+        try:
+            session.file_info(origin_path)
+            session.copy(origin_path, target_path)
+            info_file = session.file_info(target_path)
+            newfileid = info_file.attributes.get('{http://owncloud.org/ns}fileid')
+
+            # Save the fileid owncloud in plone file
+            content.fileid = newfileid
+            content.reindexObject()
+        except OCSResponseError:
+            pass
+        except HTTPResponseError as err:
+            if err.status_code == 404:
+                logger.warning('The object {} has not been copied in owncloud'.format(origin_path))
+    else:
+        # ADD CASE
+        pass
+
+
+def copyContentInFolder(content):
+    if len(content):
+        for itemId in content:
+            item = content[itemId]
+            if IFolder.providedBy(item):
+                createFolder(item)
+            elif IFileOwncloud.providedBy(item):
+                copyFile(item)
 
 
 @grok.subscribe(IFolder, IObjectAddedEvent)
@@ -28,33 +105,10 @@ def folderAdded(content, event):
     if IPloneSiteRoot.providedBy(event.object):
         pass
     else:
-        portal = api.portal.get()
-        if is_activate_owncloud(portal):
-            portal_state = content.unrestrictedTraverse('@@plone_portal_state')
-            root = getNavigationRootObject(content, portal_state.portal())
-            ppath = content.getPhysicalPath()
-            relative = ppath[len(root.getPhysicalPath()):]
-            path = "/".join(relative)
-            is_in_community = False
-            for p in range(len(relative)):
-                now = relative[:p + 1]
-                obj = root.unrestrictedTraverse(now)
-                if ICommunity.providedBy(obj):
-                    # Creem carpeta a OwnCloud
-                    is_in_community = True
-                    client = getUtility(IOwncloudClient)
-                    session = client.admin_connection()
-                    try:
-                        domain = get_domain()
-                        session.mkdir(domain + '/' + path)
-                    except OCSResponseError:
-                        pass
-                    except HTTPResponseError as err:
-                        if err.status_code == 404:
-                            logger.warning('The object {} has not been added in owncloud'.format(path))
-                    break
-            if not is_in_community:
-                logger.warning('There is not necessary Add folder in OwnCloud because ICommunity is not provided')
+        if content.id == event.newName:
+            portal = api.portal.get()
+            if is_activate_owncloud(portal):
+                createFolder(content)
 
 
 @grok.subscribe(IFolder, IObjectRemovedEvent)
@@ -166,43 +220,10 @@ def fileMoved(content, event):
 @grok.subscribe(IFileOwncloud, IObjectAddedEvent)
 def fileCopied(content, event):
     """File is copied in OwnCloud."""
-    portal = api.portal.get()
-    if is_activate_owncloud(portal):
-        root = api.portal.get()
-        if content.fileid is not None:
-            domain = get_domain()
-            # COPY CASE
-            new = content.getPhysicalPath()
-            target_path = domain + "/" + "/".join(new[len(root.getPhysicalPath()):])
-
-            origin_path = ""
-            pc = api.portal.get_tool(name='portal_catalog')
-            results = pc.searchResults(portal_type='CloudFile', fileid=content.fileid)
-            for r in results:
-                path = tuple(r.getPath().split('/'))
-                if new != path:
-                    # Hemos encontrado el objeto de origen
-                    origin_path = domain + "/" + "/".join(path[len(root.getPhysicalPath()):])
-
-            client = getUtility(IOwncloudClient)
-            session = client.admin_connection()
-            try:
-                session.file_info(origin_path)
-                session.copy(origin_path, target_path)
-                info_file = session.file_info(target_path)
-                newfileid = info_file.attributes.get('{http://owncloud.org/ns}fileid')
-
-                # Save the fileid owncloud in plone file
-                content.fileid = newfileid
-                content.reindexObject()
-            except OCSResponseError:
-                pass
-            except HTTPResponseError as err:
-                if err.status_code == 404:
-                    logger.warning('The object {} has not been copied in owncloud'.format(origin_path))
-        else:
-            # ADD CASE
-            pass
+    if content.id == event.newName:
+        portal = api.portal.get()
+        if is_activate_owncloud(portal):
+            copyFile(content)
 
 
 @grok.subscribe(IFileOwncloud, IObjectRemovedEvent)
