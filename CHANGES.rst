@@ -2,11 +2,13 @@ Changelog
 =========
 
 
-0.6 (unreleased)
+0.6 (2018-12-11)
 ----------------
 
-- Nothing changed yet.
-
+* Eliminar fichero ulearn5.owncloud.file_owncloud.xml [Iago López Fernández]
+* Owncloud: Solucionar error al renombrar Cloud File [Iago López Fernández]
+* Owncloud: Copiar directorios con contenido [Iago López Fernández]
+* Owncloud: Mover solo el contexto actual [Iago López Fernández]
 
 0.5 (2018-11-16)
 ----------------
