@@ -2,11 +2,10 @@ Changelog
 =========
 
 
-0.7 (unreleased)
+0.7 (2019-02-11)
 ----------------
 
-- Nothing changed yet.
-
+* Añadir vista de eventos en las carpetas [Iago López Fernández]
 
 0.6 (2018-12-11)
 ----------------
