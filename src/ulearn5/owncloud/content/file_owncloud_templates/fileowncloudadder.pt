@@ -59,7 +59,7 @@
               <form tal:attributes="action UPLOAD_URL" class="dropzone" id="dropzone" init="foo">
                 <div class="dz-message" i18n:translate="click_to_upload">Drop file here or click to upload</div>
                 <div class="fallback">
-                  <input name="file" type="file" multiple />
+                  <input name="file" type="file" multiple accept=".doc|.docx|.odt|.xls|.xlsx|.ods|.pps|.ppsx|.odp" />
                 </div>
                 <input type="hidden" name="subpath" tal:attributes="value request/subpath | nothing" />
               </form>
@@ -80,7 +80,8 @@
                   url: UPLOAD_URL,
                   maxFilesize: 50,
                   addRemoveLinks: false,
-                  parallelUploads: 1
+                  parallelUploads: 1,
+                  acceptedFiles: '.doc,.docx,.odt,.xls,.xlsx,.ods,.pps,.ppsx,.odp'
               });
           });
         </script>
