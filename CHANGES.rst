@@ -2,11 +2,10 @@ Changelog
 =========
 
 
-0.8 (unreleased)
+0.8 (2019-02-21)
 ----------------
 
-- Nothing changed yet.
-
+* Limitar tipos de fichero que se pueden subir desde archivos externos [Iago López Fernández]
 
 0.7 (2019-02-11)
 ----------------
