@@ -2,19 +2,20 @@
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-import logging
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from ZODB.POSException import ConflictError
+
+from plone import api
 from zope.component import getMultiAdapter
 from zope.container.interfaces import INameChooser
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
-import transaction
 
-from plone import api
 from ulearn5.core.utils import is_activate_owncloud
 from ulearn5.owncloud import objectRenamed
+
+import transaction
+import logging
 
 logger = logging.getLogger(__name__)
 
@@ -22,10 +23,9 @@ logger = logging.getLogger(__name__)
 def __call__(self):
     self.errors = []
     self.protect()
-    context = aq_inner(self.context)
 
-    catalog = getToolByName(context, 'portal_catalog')
-    mtool = getToolByName(context, 'portal_membership')
+    catalog = api.portal.get_tool(name='portal_catalog')
+    mtool = api.portal.get_tool(name='portal_membership')
 
     missing = []
     for key in self.request.form.keys():
