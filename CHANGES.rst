@@ -2,11 +2,11 @@ Changelog
 =========
 
 
-0.9 (unreleased)
+0.9 (2021-01-27)
 ----------------
 
-- Nothing changed yet.
-
+* Add view future events [Pilar Marinas]
+* Reemplazar getToolByName por api.portal.get_tool [Iago López Fernández]
 
 0.8 (2019-02-21)
 ----------------
